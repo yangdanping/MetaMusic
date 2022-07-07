@@ -1,0 +1,51 @@
+/* pages/home-profile/index.wxss */
+@import '../../style/animation.wxss';
+
+.profile {
+  height: 100vh;
+  background: linear-gradient(180deg, rgb(38, 206, 138), rgb(255, 222, 203));
+}
+
+.userInfo,
+.banner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.banner {
+  height: 50vh;
+}
+
+.avatar {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 100rpx;
+  margin: 180rpx 0;
+}
+
+.btn {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 80%;
+  width: 480rpx;
+  height: 120rpx;
+  font-size: 44rpx;
+  line-height: 120rpx;
+  text-align: center;
+  border-radius: 15rpx;
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  font-weight: 400;
+}
+
+.msg {
+  font-size: 66rpx;
+  font-weight: bold;
+  text-align: center;
+  padding: 4rpx 0;
+  color: rgba(255, 255, 255, 0.9);
+  animation: moveDown 1s forwards;
+}

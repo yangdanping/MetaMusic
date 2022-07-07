@@ -1,0 +1,24 @@
+<!--pages/home-video/index.wxml-->
+<view class="video-container" wx:if="{{mvURLInfo.url}}">
+  <van-icon bindtap="colseVideo" color="#fff" size="30px" class="colse-icon" name="cross" />
+  <video picture-in-picture-mode="push" class="video-detail" src="{{mvURLInfo.url}}" show-mute-btn enable-play-gesture></video>
+</view>
+
+<view class="video">
+  <view class="item" wx:for="{{topMVs}}" wx:key="id">
+    <video-item-v1 bindlongpress="handleLongPress" bindtap="handleVideoItemClick" data-item="{{item}}" item="{{item}}"></video-item-v1>
+  </view>
+  <view wx:if="{{scrollTop > 500}}" class="backTop" bindtap="backTop">
+    <van-icon name="arrow-up" size="20px" color="#26ce8a" />
+  </view>
+</view>
+<view class="loading" wx:if="{{hasMore === true}}">
+  <van-loading color="#26ce8a" />
+</view>
+
+<!-- 加载组件---------------------------------------- -->
+<view class="video-loading" wx:if="{{showLoading}}">
+  <van-loading size="40px" text-size="18px" color="#26ce8a" vertical>
+    <text style="color: #fff;">加载MV中...</text>
+  </van-loading>
+</view>

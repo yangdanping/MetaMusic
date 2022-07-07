@@ -1,0 +1,32 @@
+/* components/header-title/index.wxss */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 88rpx;
+}
+
+.header .title {
+  font-size: 36rpx;
+  font-weight: 700;
+}
+/* 下面是在小程序中实现默认slot的方法 */
+.header .default {
+  /* 这里先设置none,配合下面的选择器 */
+  display: none;
+  align-items: center;
+  font-size: 28rpx;
+  color: #777;
+}
+
+/* 这里模拟实现vue中默认slot(:empty是伪类,+表示给.slot加选择器)
+这里意思就是:当.slot没有子元素时,给.slot加上.default选择器内的属性
+这就是连接选择器的使用 */
+.header .slot:empty + .default {
+  display: flex;
+}
+
+.header .default .icon {
+  width: 50rpx;
+  height: 50rpx;
+}

@@ -1,0 +1,66 @@
+/* pages/home-video/index.wxss */
+@import '../../style/animation.wxss';
+
+.video {
+  display: flex;
+  justify-content: space-around;
+  /*  flex-wrap: wrap 即flex容器为多行。该情况下flex子项溢出的部分会被放置到新行，子项内部会发生断行  */
+  flex-wrap: wrap;
+}
+
+.item {
+  width: 48%;
+}
+
+.backTop {
+  position: fixed;
+  right: 40rpx;
+  bottom: 40rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(204, 204, 204, 0.5);
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-container {
+  position: relative;
+}
+
+.colse-icon {
+  position: fixed;
+  right: 10rpx;
+  top: 10rpx;
+  z-index: 100;
+}
+
+.video-detail {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 99;
+  animation: moveDown 0.5s forwards;
+}
+
+.video-loading {
+  position: fixed;
+  top: 50vh;
+  left: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  width: 230rpx;
+  height: 230rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateX(-50%);
+  z-index: 99;
+}

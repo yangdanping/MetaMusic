@@ -1,0 +1,30 @@
+/* wxs一般用来为wxml里展示的数据做格式化而编写工具函数的地方,不支持ES6语法 */
+function formatCount(count) {
+  var counter = parseInt(count);
+  if (counter > Math.pow(10, 8)) {
+    return (counter / Math.pow(10, 8)).toFixed(1) + '亿';
+  } else if (counter > Math.pow(10, 4)) {
+    return (counter / Math.pow(10, 4)).toFixed(1) + '万';
+  } else {
+    return counter + ''; //数字转字符串
+  }
+}
+
+function formatDuration(duration) {
+  duration /= 1000;
+  var minute = Math.floor(duration / 60); // 488s / 60 = 8.12
+  var second = Math.floor(duration) % 60; // 488s % 60
+  return padLeftZero(minute) + ':' + padLeftZero(second);
+}
+
+function padLeftZero(time) {
+  // time += '';//转为字符串
+  time = time.toString();
+  return ('00' + time).slice(time.length); // 12 -> 12,5 -> 05
+}
+
+// wxs中要用commonJS中的导出方式
+module.exports = {
+  formatCount: formatCount,
+  formatDuration: formatDuration
+};

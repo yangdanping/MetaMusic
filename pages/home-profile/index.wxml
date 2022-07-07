@@ -1,0 +1,15 @@
+<!--pages/home-profile/index.wxml-->
+<view class="profile">
+  <view class="banner">
+    <block wx:if="{{!isShow}}">
+      <view class="msg">欢迎来到Meta音乐盒</view>
+      <view class="btn" bindtap="getUserProfile">微信登录</view>
+    </block>
+    <block wx:else>
+      <view class="userInfo">
+        <image class="avatar" src="{{imgUrl}}" alt="" />
+        <view class="msg">{{userInfo.nickName}}，欢迎回来</view>
+      </view>
+    </block>
+  </view>
+</view>

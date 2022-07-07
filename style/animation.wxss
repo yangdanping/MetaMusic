@@ -1,0 +1,121 @@
+@keyframes moveDown {
+  0% {
+    transform: translate(0, -100px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes moveTop {
+  0% {
+    transform: translate(0, 100rpx);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0.75;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  75% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes bear {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: -1600px 0;
+  }
+}
+
+@keyframes move {
+  0% {
+    transform: translateX(-500rpx);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes swipermove {
+  0% {
+    transform: translateY(-500rpx);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/*music动画=============================================================================*/
+@keyframes hinding {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-40rpx, 0);
+    opacity: 0.2;
+  }
+}
+
+@keyframes musicRotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes musicStart {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(20deg);
+  }
+}
+
+@keyframes musicStop {
+  from {
+    transform: rotate(20deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
+}

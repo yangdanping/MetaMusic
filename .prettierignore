@@ -1,0 +1,12 @@
+/dist/*
+.local
+.output.js
+/node_modules/**
+./src/global/*
+
+
+**/*.svg
+**/*.sh
+**/global/index.js
+
+/public/*

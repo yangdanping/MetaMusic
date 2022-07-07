@@ -1,0 +1,32 @@
+/* components/music-menu-area/index.wxss */
+.menu-list-v1 {
+  white-space: nowrap;
+  background: pink;
+  position: relative;
+  left: -20rpx;
+}
+
+.menu-list-v2 {
+  /* scroll-view若想仅一行显示则必须添加该属性,使其内部item不换行 */
+  white-space: nowrap;
+  /* 直接用视口宽度作为sv的宽度,实现sv滑动时不会有空白,代替获取设备宽度的方案 */
+  width: 100vw;
+  /* 因为此时sv宽度为设备宽度且我全局padding:0 20rpx,所以整个sv往右偏了
+  所以用相对定位让其向左偏移过来,打开bg观察更明显*/
+  /* background: pink; */
+  position: relative;
+  left: -20rpx;
+}
+
+.menu-item {
+  /* 由于块级元素特性是独占一行,所以改为ib */
+  display: inline-block;
+  /* 让元素顶部对其,这样就不会在某些手机上看到没有对齐的情况 */
+  vertical-align: top;
+  width: 200rpx;
+  margin-left: 20rpx;
+}
+/* 该内部最后一个item一个右外边距 */
+.menu-item:last-of-type {
+  margin-right: 20rpx;
+}

@@ -1,0 +1,14 @@
+<!--components/video-item-v2/index.wxml-->
+<wxs src="../../utils/format.wxs" module="format"></wxs>
+<!-- 注意组件做flex布局的子元素时,最好在组件外包一个view,解决样式不生效的问题 -->
+<view class="item">
+  <view class="album">
+    <!-- 注意!小程序中image标签设置mode="widthFix",即根据图片宽度去自动设置高度,而非用微信默认的240px -->
+    <image class="image" src="{{item.cover}}" mode="widthFix"></image>
+    <view class="info">
+      <view class="count">{{format.formatCount(item.playCount)}}</view>
+      <view class="duration">{{format.formatDuration(item.mv.videos[0].duration)}}</view>
+    </view>
+  </view>
+  <view class="content">{{item.name}} - {{item.artistName}}</view>
+</view>

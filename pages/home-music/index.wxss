@@ -1,0 +1,26 @@
+/* pages/home-music/index.wxss */
+page {
+  padding: 0 20rpx;
+  /* 注意,要全局设置box-sizing:border-box,解决page设置padding后页面变大的问题 */
+}
+
+.swiper {
+  border-radius: 10rpx;
+  overflow: hidden;
+  /* 在上面基础上解决小程序中圆角不生效的bug */
+  transform: translateY(0);
+}
+
+.swiper-item {
+  display: flex;
+}
+
+.swiper-item .swiper-image {
+  width: 100%;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

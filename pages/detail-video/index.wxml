@@ -1,0 +1,41 @@
+<!--pages/detail-video/index.wxml-->
+<view class="video-container">
+  <video class="video" src="{{mvURLInfo.url}}" bindplay="play" bindpause="pause" show-mute-btn enable-play-gesture></video>
+  <view class="video-banner">
+    <view class="video-info">
+      <view class="cover">
+        <image class="img {{isPlayingMusic ? 'play' : 'pause'}}" src="{{mvDetail.cover}}"></image>
+      </view>
+      <view class="name" wx:if="{{mvDetail}}">
+        {{mvDetail.name}} - <text style="font-weight: 100;">{{mvDetail.artistName}}</text>
+      </view>
+    </view>
+    <view class="love" bindtap="changeLove">
+      <!-- <van-icon color="{{isLove?'red':''}}" name="like-o" size="26px" /> -->
+      <image wx:if="{{!isLove}}" src="../../assets/images/icons/heart-normal.svg"></image>
+      <image wx:else src="../../assets/images/icons/heart-active.svg"></image>
+    </view>
+  </view>
+</view>
+<view class="nav">
+  <van-tabs color="#26ce8a" offset-top="280" sticky active="{{ active }}" bind:change="onChange" animated>
+    <van-tab title="简介" name="简介">
+      <view class="abstract">
+        <van-tag class="tag" type="primary" color="#ffca28" plain>mv</van-tag>
+        <view class="mv-title">{{mvDetail.name}}</view>
+      </view>
+    </van-tab>
+    <van-tab title="评论" name="评论">
+      <block wx:for="{{100}}" wx:key="*this">
+        <view>列表:{{item}}</view>
+      </block>
+    </van-tab>
+  </van-tabs>
+</view>
+
+<!-- 加载组件---------------------------------------- -->
+<view class="video-loading" wx:if="{{showLoading}}">
+  <van-loading size="40px" text-size="18px" color="#26ce8a" vertical>
+    <text style="color: #fff;">加载MV中...</text>
+  </van-loading>
+</view>
