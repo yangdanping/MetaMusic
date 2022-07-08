@@ -4,6 +4,13 @@
 .item {
   width: 100%;
   margin-bottom: 30rpx;
+  transition: all 0.3s;
+}
+
+.item:active {
+  transform: scale(1.1);
+  opacity: 0.6;
+  z-index: 999;
 }
 
 .album {

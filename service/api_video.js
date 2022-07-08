@@ -13,18 +13,32 @@ export function getMVURL(id) {
   return myRequest.get('/mv/url', { id });
 }
 
-/**
- * 请求MV的详情
- * @param {number} mvid MV的id
- */
 export function getMVDetail(mvid) {
   return myRequest.get('/mv/detail', { mvid });
 }
 
-/**
- * 请求相关视频
- * @param {number} id MV的id
- */
+export function getMVInfo(mvid) {
+  return myRequest.get('/mv/detail/info', { mvid });
+}
+
+export function getMVComment(id) {
+  return myRequest.get('/comment/mv', { id });
+}
+
+// 视频--------------------------------------------------------------------------------------
+
 export function getRelatedVideo(id) {
   return myRequest.get('/related/allvideo', { id });
+}
+
+export function getVideoDetail(id) {
+  return myRequest.get('/video/detail', { id });
+}
+
+export function getVideoURL(id) {
+  return myRequest.get('/video/url', { id });
+}
+
+export function getVideoInfo(vid) {
+  return myRequest.get('/video/detail/info', { vid });
 }

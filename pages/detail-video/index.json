@@ -4,6 +4,7 @@
     "van-tab": "@vant/weapp/tab/index",
     "van-tabs": "@vant/weapp/tabs/index",
     "van-tag": "@vant/weapp/tag/index",
-    "van-loading": "@vant/weapp/loading/index"
+    "van-loading": "@vant/weapp/loading/index",
+    "video-item-v2": "/components/video-item-v2/index"
   }
 }

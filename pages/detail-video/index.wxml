@@ -1,34 +1,75 @@
 <!--pages/detail-video/index.wxml-->
+<wxs src="../../utils/format.wxs" module="format"></wxs>
 <view class="video-container">
   <video class="video" src="{{mvURLInfo.url}}" bindplay="play" bindpause="pause" show-mute-btn enable-play-gesture></video>
   <view class="video-banner">
     <view class="video-info">
       <view class="cover">
-        <image class="img {{isPlayingMusic ? 'play' : 'pause'}}" src="{{mvDetail.cover}}"></image>
+        <image class="img {{isPlayingMusic ? 'play' : 'pause'}}" src="{{mvDetail.cover ? mvDetail.cover:mvDetail.coverUrl}}"></image>
       </view>
       <view class="name" wx:if="{{mvDetail}}">
-        {{mvDetail.name}} - <text style="font-weight: 100;">{{mvDetail.artistName}}</text>
+        {{mvDetail.name?mvDetail.name:mvDetail.title}}<text wx:if="{{mvDetail.name}}" style="font-weight: 100;"> - {{mvDetail.artistName}}</text>
       </view>
     </view>
     <view class="love" bindtap="changeLove">
-      <!-- <van-icon color="{{isLove?'red':''}}" name="like-o" size="26px" /> -->
       <image wx:if="{{!isLove}}" src="../../assets/images/icons/heart-normal.svg"></image>
       <image wx:else src="../../assets/images/icons/heart-active.svg"></image>
     </view>
   </view>
 </view>
 <view class="nav">
-  <van-tabs color="#26ce8a" offset-top="280" sticky active="{{ active }}" bind:change="onChange" animated>
+  <van-tabs color="#26ce8a" offset-top="275" sticky active="{{ active }}" bind:change="onChange" animated>
+    <!-- 简介tab栏------------------------------------------------------- -->
     <van-tab title="简介" name="简介">
-      <view class="abstract">
+      <view class="abstract-1" wx:if="{{mvDetail}}">
         <van-tag class="tag" type="primary" color="#ffca28" plain>mv</van-tag>
-        <view class="mv-title">{{mvDetail.name}}</view>
+        <view class="mv-title">{{mvDetail.name?mvDetail.name:mvDetail.title}}</view>
+      </view>
+      <view class="abstract-2">
+        <text class="count">{{format.formatCount(mvDetail.playCount?mvDetail.playCount:mvDetail.playTime)}}次观看</text>
+        ·
+        <text>{{mvDetail.publishTime}}</text>
+      </view>
+      <view class="operation">
+        <view>
+          <image src="../../assets/images/icons/share.svg"></image>
+          <text>{{format.formatCount(mvInfo.shareCount)}}</text>
+        </view>
+        <view>
+          <image src="../../assets/images/icons/comment.svg"></image>
+          <text>{{mvInfo.commentCount}}</text>
+        </view>
+        <view>
+          <image src="../../assets/images/icons/like.svg"></image>
+          <text>{{mvInfo.likedCount}}</text>
+        </view>
+      </view>
+      <view class="relative">
+        <block wx:for="{{relatedVideos}}" wx:key="vid">
+          <video-item-v2 bindtap="handleVideoItemClick" data-item="{{item}}" item="{{item}}"></video-item-v2>
+        </block>
       </view>
     </van-tab>
-    <van-tab title="评论" name="评论">
-      <block wx:for="{{100}}" wx:key="*this">
-        <view>列表:{{item}}</view>
-      </block>
+    <!-- 评论tab栏----------------------------------------- -->
+    <van-tab title="评论({{mvDetail.commentCount}})" name="评论">
+      <view class="comment">
+        <block wx:for="{{mvComments}}" wx:key="commentId">
+          <view class="item">
+            <view class="avatar">
+              <image src="{{item.user.avatarUrl}}"></image>
+            </view>
+            <view class="content">
+              <view>{{item.user.nickname}}</view>
+              <view class="time">{{item.timeStr}}</view>
+              <view class="mainContent">{{item.content}}</view>
+            </view>
+            <view class="like">
+              <text class="likeCount">{{item.likedCount}}</text>
+              <van-icon name="good-job-o" size="24px" />
+            </view>
+          </view>
+        </block>
+      </view>
     </van-tab>
   </van-tabs>
 </view>
@@ -36,6 +77,6 @@
 <!-- 加载组件---------------------------------------- -->
 <view class="video-loading" wx:if="{{showLoading}}">
   <van-loading size="40px" text-size="18px" color="#26ce8a" vertical>
-    <text style="color: #fff;">加载MV中...</text>
+    <text style="color: #fff;">加载中...</text>
   </van-loading>
 </view>
