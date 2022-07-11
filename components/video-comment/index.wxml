@@ -1,0 +1,17 @@
+<!--components/video-comment/index.wxml-->
+<view class="item">
+  <view class="avatar">
+    <image src="{{item.user.avatarUrl}}" mode="widthFix"></image>
+  </view>
+  <view class="content-container">
+    <view class="content">
+      <view>{{item.user.nickname}}</view>
+      <view class="time">{{item.timeStr}}</view>
+      <view class="mainContent">{{item.content}}</view>
+    </view>
+    <view class="like">
+      <text class="likeCount">{{item.likedCount}}</text>
+      <van-icon name="good-job-o" size="24px" />
+    </view>
+  </view>
+</view>

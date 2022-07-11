@@ -132,58 +132,11 @@ page {
   margin-top: 20rpx;
 }
 
-.comment .item {
-  position: relative;
+.loading {
   display: flex;
-  border-bottom: 1px solid #ccc;
-  padding: 20rpx 0;
-  margin: 20rpx 0;
-}
-.comment .item .like {
-  position: absolute;
-  right: 20rpx;
-  top: 0;
-  color: #9c9c9c;
-}
-.item .like .likeCount {
-  margin-right: 10rpx;
-}
-.comment .item .avatar {
-  height: 80rpx;
-  width: 80rpx;
-  margin: 0 20rpx;
-}
-
-.avatar image {
-  height: 100%;
-  width: 100%;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-}
-
-.content .time {
-  font-size: 30rpx;
-  color: #9c9c9c;
-}
-
-.content .mainContent.twoLine {
-  /* 显示两行 */
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  display: -moz-box;
-  -moz-line-clamp: 2;
-  -moz-box-orient: vertical;
-  word-wrap: break-word;
-  word-break: break-all;
-  white-space: normal;
-  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  margin: 30rpx 0;
 }
 
 @keyframes musicRotate {

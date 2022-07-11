@@ -1,7 +1,7 @@
 <!--pages/home-video/index.wxml-->
 <view class="video-container" wx:if="{{mvURLInfo.url}}">
   <van-icon bindtap="colseVideo" color="#fff" size="30px" class="colse-icon" name="cross" />
-  <video picture-in-picture-mode="push" class="video-detail" src="{{mvURLInfo.url}}" show-mute-btn enable-play-gesture></video>
+  <video picture-in-picture-mode="{{['push', 'pop']}}" class="video-detail" src="{{mvURLInfo.url}}" show-mute-btn enable-play-gesture></video>
 </view>
 
 <view class="video">

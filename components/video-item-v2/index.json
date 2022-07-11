@@ -1,4 +1,6 @@
 {
   "component": true,
-  "usingComponents": {}
+  "usingComponents": {
+    "van-share-sheet": "@vant/weapp/share-sheet/index"
+  }
 }

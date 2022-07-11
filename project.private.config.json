@@ -30,13 +30,6 @@
           "query": "",
           "launchMode": "default",
           "scene": null
-        },
-        {
-          "name": "",
-          "pathName": "pages/home-profile/index",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
         }
       ]
     }

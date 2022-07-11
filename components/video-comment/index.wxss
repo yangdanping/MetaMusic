@@ -1,0 +1,52 @@
+/* components/video-comment/index.wxss */
+.item {
+  position: relative;
+  display: flex;
+  padding: 20rpx 0;
+  margin: 10rpx 0;
+}
+
+.item .like {
+  position: absolute;
+  right: 20rpx;
+  top: 0;
+  color: #9c9c9c;
+}
+
+.item .like .likeCount {
+  margin-right: 10rpx;
+}
+
+.item .avatar {
+  width: 90rpx;
+  margin: 0 20rpx;
+}
+
+.avatar image {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.content-container {
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+  padding-bottom: 20rpx;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.content view {
+  padding-bottom: 10rpx;
+}
+
+.content .time {
+  font-size: 30rpx;
+  color: #9c9c9c;
+}
+
+

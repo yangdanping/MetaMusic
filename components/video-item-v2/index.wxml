@@ -1,6 +1,7 @@
 <!--components/video-item-v2/index.wxml-->
 <wxs src="../../utils/format.wxs" module="format"></wxs>
 <!-- 注意组件做flex布局的子元素时,最好在组件外包一个view,解决样式不生效的问题 -->
+
 <view class="item">
   <view class="album">
     <image class="image" src="{{item.coverUrl}}" mode="widthFix"></image>

@@ -1,8 +1,8 @@
 /* components/music-item-v1/index.wxss */
 .item {
   display: flex;
-  padding: 16rpx 0;
   align-items: center;
+  padding: 16rpx 0;
 }
 
 .image {
@@ -12,8 +12,8 @@
 }
 
 .content {
-  margin-left: 16rpx;
   flex: 1;
+  margin-left: 16rpx;
 }
 
 .content .name {

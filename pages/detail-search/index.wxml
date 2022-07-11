@@ -2,17 +2,18 @@
 <!-- 1.搜索框 -->
 <van-search bind:change="handleSearchClick" value="{{searchValue}}" background="#fafafa" shape="round" placeholder="搜索您喜欢的歌曲" />
 <!-- 2.热门搜索 -->
-<view class="hot" wx:if="{{!searchValue.length && !suggestSongs.length}}">
+<!-- <view class="hot" wx:if="{{!searchValue.length && !suggestSongs.length}}">
   <header-title title="热门搜索" showRight="{{false}}"></header-title>
   <view class="list">
     <block wx:for="{{hotKeywords}}" wx:key="first">
       <view class="tag">{{item.first}}</view>
     </block>
   </view>
-</view>
+</view> -->
 
 <!-- 3.建议搜索 -->
-<view class="suggest" wx:else>
+<!-- 用rich-text代替原来的text -->
+<!-- <view class="suggest" wx:else>
   <view class="title">
     搜索"{{searchValue}}"
   </view>
@@ -20,9 +21,8 @@
     <block wx:for="{{suggestSongs}}" wx:key="keyword">
       <view class="item">
         <image class="icon" mode="widthFix" src="/assets/images/icons/search_icon.png"></image>
-        <!-- <text class="text">{{item.keyword}}</text> -->
         <rich-text nodes="" class="text">{{item.keyword}}</rich-text>
       </view>
     </block>
   </view>
-</view>
+</view> -->

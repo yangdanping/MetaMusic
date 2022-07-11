@@ -1,7 +1,7 @@
 <!--pages/detail-video/index.wxml-->
 <wxs src="../../utils/format.wxs" module="format"></wxs>
 <view class="video-container">
-  <video class="video" src="{{mvURLInfo.url}}" bindplay="play" bindpause="pause" show-mute-btn enable-play-gesture></video>
+  <video class="video" src="{{mvURLInfo.url}}" picture-in-picture-mode="{{['push', 'pop']}}" bindplay="play" bindpause="pause" show-mute-btn enable-play-gesture></video>
   <view class="video-banner">
     <view class="video-info">
       <view class="cover">
@@ -35,7 +35,7 @@
           <image src="../../assets/images/icons/share.svg"></image>
           <text>{{format.formatCount(mvInfo.shareCount)}}</text>
         </view>
-        <view>
+        <view bindtap="onChange">
           <image src="../../assets/images/icons/comment.svg"></image>
           <text>{{mvInfo.commentCount}}</text>
         </view>
@@ -54,21 +54,11 @@
     <van-tab title="评论({{mvDetail.commentCount}})" name="评论">
       <view class="comment">
         <block wx:for="{{mvComments}}" wx:key="commentId">
-          <view class="item">
-            <view class="avatar">
-              <image src="{{item.user.avatarUrl}}"></image>
-            </view>
-            <view class="content">
-              <view>{{item.user.nickname}}</view>
-              <view class="time">{{item.timeStr}}</view>
-              <view class="mainContent">{{item.content}}</view>
-            </view>
-            <view class="like">
-              <text class="likeCount">{{item.likedCount}}</text>
-              <van-icon name="good-job-o" size="24px" />
-            </view>
-          </view>
+          <video-comment item="{{item}}"></video-comment>
         </block>
+      </view>
+      <view wx:if="{{showCommentsLoading}}" class="loading">
+        <van-loading color="#26ce8a" />
       </view>
     </van-tab>
   </van-tabs>

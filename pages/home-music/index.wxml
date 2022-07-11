@@ -1,6 +1,6 @@
 <!--pages/home-music/index.wxml-->
 <!-- 1.搜索框(我们这里设置首页是不能搜索,点击后进入搜索页面) -->
-<!-- <van-search bind:click-input="handleSearchClick" disabled background="#fafafa" shape="round" placeholder="搜索您喜欢的歌曲" /> -->
+<van-search bind:click-input="handleSearchClick" background="#fafafa" shape="round" placeholder="搜索您喜欢的歌曲" disabled />
 <!-- 2.轮播图(注意!swiper默认最大高度为150px,所以要动态设置轮播图组件swiper的高度,必须永远与图片高度保持一致)
 使用image的bindload事件 -- 当图片载入完毕时触发,注意默认给我们的event.detail = {height, width}是原始图片高度,是不能用的,要通过另外一个方法获取到 -->
 <swiper class="swiper" style="height: {{swiperHeight}}px;" indicator-active-color="#26ce8a" indicator-dots autoplay circular>
@@ -11,7 +11,11 @@
   </block>
 </swiper>
 
-<!-- 3.推荐歌曲(有值时才进行展示,包括下面) -->
+<!-- 3.热门/华语歌单 -->
+<music-menu-area title="热门歌单" songMenu="{{hotSongMenu}}" wx:if="{{hotSongMenu.length}}"></music-menu-area>
+<music-menu-area title="华语歌单" songMenu="{{chineseSongMenu}}" wx:if="{{chineseSongMenu.length}}"></music-menu-area>
+
+<!-- 4.推荐歌曲(有值时才进行展示,包括下面) -->
 <view class="recommend-song" wx:if="{{recommendSongs.length}}">
   <header-title title="推荐歌曲" bind:moreClick="handleMoreClick"></header-title>
   <view class="song-list">
@@ -20,17 +24,7 @@
     </block>
   </view>
 </view>
-<block wx:if="{{recommendSongs.length}}">
-  <view class="box1">box1</view>
-  <view class="box2">box2</view>
-  <view class="box3">box3</view>
-  <view class="box4">box4</view>
-  <view class="box5">box5</view>
-</block>
 
-<!-- 4.热门/华语歌单 -->
-<!-- <music-menu-area title="热门歌单" songMenu="{{hotSongMenu}}" wx:if="{{hotSongMenu.length}}"></music-menu-area> -->
-<!-- <music-menu-area title="华语歌单" songMenu="{{chineseSongMenu}}" wx:if="{{chineseSongMenu.length}}"></music-menu-area> -->
 
 <!-- 5.巅峰榜 -->
 <!-- 注意!1.小程序中支持对对象进行遍历(此时,对象的value是item,key是index)
@@ -46,3 +40,12 @@
 <view class="loading" wx:if="{{showLoading}}">
   <van-loading color="#26ce8a" />
 </view>
+
+
+<block wx:if="{{recommendSongs.length}}">
+  <view class="box1">box1</view>
+  <view class="box2">box2</view>
+  <view class="box3">box3</view>
+  <view class="box4">box4</view>
+  <view class="box5">box5</view>
+</block>
