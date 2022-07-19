@@ -1,0 +1,18 @@
+<!--pages/detail-menu/index.wxml-->
+<view class="menu-list">
+  <block wx:for="{{playlists}}">
+    <view class="item" data-item="{{item}}" bindtap="handleMenuItemClick">
+      <view class="cover">
+        <image class="image" mode="widthFix" src="{{item.coverImgUrl}}"></image>
+      </view>
+      <view>
+        <text>{{item.name}}</text>
+      </view>
+    </view>
+  </block>
+</view>
+
+<!-- 加载组件---------------------------------------- -->
+<view class="loading" wx:if="{{hasMore}}">
+  <van-loading color="#26ce8a" />
+</view>

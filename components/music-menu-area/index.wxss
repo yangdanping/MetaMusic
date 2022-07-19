@@ -23,9 +23,12 @@
   display: inline-block;
   /* 让元素顶部对其,这样就不会在某些手机上看到没有对齐的情况 */
   vertical-align: top;
-  width: 200rpx;
+  /* width: 2 76rpx; */
+  width: 240rpx;
   margin-left: 20rpx;
+  color: #666;
 }
+
 /* 该内部最后一个item一个右外边距 */
 .menu-item:last-of-type {
   margin-right: 20rpx;

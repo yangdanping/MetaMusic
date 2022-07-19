@@ -27,11 +27,18 @@ Component({
    * 组件的方法列表
    */
   methods: {
+    handleHeaderClick(){
+      this.triggerEvent('headerClick');
+    },
     handleMenuItemClick(event) {
       const id = event.currentTarget.dataset.item.id;
       // 增加type字段来对不同的跳转方式进行区分
       wx.navigateTo({
-        url: `/pages/detail-songs/index?id=${id}&type=menu`
+        url: `/pages/detail-songs/index?id=${id}&type=menu`,
+        success(res) {
+          const item = event.currentTarget.dataset.item;
+          res.eventChannel.emit('getMenuData', item); //触发事件
+        }
       });
     }
   }

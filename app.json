@@ -1,5 +1,13 @@
 {
-  "pages": ["pages/home-music/index", "pages/home-video/index", "pages/detail-video/index", "pages/detail-search/index", "pages/detail-songs/index", "pages/home-profile/index"],
+  "pages": [
+    "pages/home-music/index",
+    "pages/home-video/index",
+    "pages/detail-video/index",
+    "pages/detail-search/index",
+    "pages/detail-songs/index",
+    "pages/home-profile/index",
+    "pages/detail-menu/index"
+  ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fafafa",
@@ -31,5 +39,10 @@
   "style": "v2",
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents",
-  "requiredBackgroundModes": ["audio"]
+  "requiredBackgroundModes": [
+    "audio"
+  ],
+  "usingComponents": {
+    "music-bar": "/components/music-bar/index"
+  }
 }

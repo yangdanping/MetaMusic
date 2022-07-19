@@ -1,8 +1,11 @@
 <!--components/detail-header/index.wxml-->
+<wxs src="../../utils/format.wxs" module="format"></wxs>
 <view class="header">
-  <!-- 背景(若想图片以固定宽高进行填充,则mode选择aspectFill) -->
-  <image class="bg-image" mode="aspectFill" src="{{songInfo.coverImgUrl}}"></image>
-  <view class="bg-cover"></view>
+  <!-- header背景(若想图片以固定宽高进行填充,则mode选择aspectFill) -->
+  <view class="bg">
+    <image wx:if="{{songInfo.coverImgUrl}}" class="bg-image" mode="aspectFill" src="{{songInfo.coverImgUrl}}"></image>
+    <view wx:if="{{songInfo.coverImgUrl}}" class="bg-mask"></view>
+  </view>
   <!-- 内容 -->
   <view class="content">
     <image class="image" mode="aspectFill" src="{{songInfo.coverImgUrl}}"></image>
@@ -18,7 +21,7 @@
   <view class="operation">
     <view class="favor item">
       <image class="icon" mode="widthFix" src="/assets/images/icons/favor_icon.png"></image>
-      <text class="text">{{songInfo.playCount}}</text>
+      <text class="text">{{format.formatCount(songInfo.playCount)}}</text>
     </view>
     <view class="share item">
       <image class="icon" mode="widthFix" src="/assets/images/icons/share_icon.png"></image>

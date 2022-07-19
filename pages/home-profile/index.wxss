@@ -41,6 +41,14 @@
   font-weight: 400;
 }
 
+.qr {
+  margin-top: 100rpx;
+}
+
+.image {
+  width: 350rpx;
+}
+
 .msg {
   font-size: 66rpx;
   font-weight: bold;
@@ -48,4 +56,8 @@
   padding: 4rpx 0;
   color: rgba(255, 255, 255, 0.9);
   animation: moveDown 1s forwards;
+}
+
+.dialog button {
+  width: 100% !important;
 }

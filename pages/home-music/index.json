@@ -1,10 +1,12 @@
 {
+  "component": true,
   "usingComponents": {
     "van-search": "@vant/weapp/search/index",
     "van-loading": "@vant/weapp/loading/index",
     "header-title": "/components/header-title/index",
     "music-item-v1": "/components/music-item-v1/index",
     "music-menu-area": "/components/music-menu-area/index",
-    "ranking-item": "/components/ranking-item/index"
+    "ranking-item": "/components/ranking-item/index",
+    "custom-swiper": "/components/custom-swiper/index"
   }
 }

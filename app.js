@@ -11,5 +11,13 @@ App({
     this.globalData.screenHeight = info.screenHeight;
     // 外部通过 const app = getApp() 获取到globalData中的数据
     console.log('设备屏幕宽度 -->', this.globalData.screenWidth);
+  },
+  onHide() {
+    const bgAudio = wx.getBackgroundAudioManager();
+    console.log('onHide bgAudiobgAudiobgAudiobgAudiobgAudio', bgAudio);
+  },
+  onShow() {
+    const bgAudio = wx.getBackgroundAudioManager();
+    console.log('onShow bgAudiobgAudiobgAudiobgAudiobgAudio', bgAudio);
   }
 });

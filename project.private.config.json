@@ -18,15 +18,15 @@
           "scene": null
         },
         {
-          "name": "detail-songs",
-          "pathName": "pages/detail-songs/index",
-          "query": "id=6883421967&type=menu",
+          "name": "detail-search",
+          "pathName": "pages/detail-search/index",
+          "query": "",
           "launchMode": "default",
           "scene": null
         },
         {
-          "name": "detail-search",
-          "pathName": "pages/detail-search/index",
+          "name": "",
+          "pathName": "pages/home-profile/index",
           "query": "",
           "launchMode": "default",
           "scene": null

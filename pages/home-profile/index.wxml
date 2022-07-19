@@ -1,9 +1,20 @@
 <!--pages/home-profile/index.wxml-->
 <view class="profile">
+  <!-- ---------------------------------- -->
+  <van-dialog class="dialog" use-slot title="标题" show="{{ showDialog }}" show-cancel-button bind:close="close" bind:confirm="verifyCode">
+    <van-field label="手机号" clearable model:value="{{ phone }}" placeholder="请输入手机号" border="{{ false }}" />
+    <van-field label="验证码" clearable maxlength="{{4}}" model:value="{{ code }}" placeholder="请输入验证码" border="{{ false }}" use-button-slot>
+      <van-button disabled="{{btnDisabled}}" bindtap="getCode" slot="button" size="small" color="#4cd195">{{btnValue}}</van-button>
+    </van-field>
+  </van-dialog>
   <view class="banner">
     <block wx:if="{{!isShow}}">
       <view class="msg">欢迎来到Meta音乐盒</view>
-      <view class="btn" bindtap="getUserProfile">微信登录</view>
+      <!-- <view wx:if="{{!qrimg}}" class="btn" bindtap="qrCodeLogin">二维码登录</view> -->
+      <view wx:if="{{!qrimg}}" class="btn" bindtap="getUserProfile">短信登录</view>
+      <view class="qr" wx:else>
+        <image class="image" src="{{qrimg}}" mode="widthFix"></image>
+      </view>
     </block>
     <block wx:else>
       <view class="userInfo">

@@ -3,17 +3,19 @@
 <van-search bind:click-input="handleSearchClick" background="#fafafa" shape="round" placeholder="搜索您喜欢的歌曲" disabled />
 <!-- 2.轮播图(注意!swiper默认最大高度为150px,所以要动态设置轮播图组件swiper的高度,必须永远与图片高度保持一致)
 使用image的bindload事件 -- 当图片载入完毕时触发,注意默认给我们的event.detail = {height, width}是原始图片高度,是不能用的,要通过另外一个方法获取到 -->
-<swiper class="swiper" style="height: {{swiperHeight}}px;" indicator-active-color="#26ce8a" indicator-dots autoplay circular>
+
+<!-- <swiper class="swiper" style="height: {{swiperHeight}}px;" indicator-active-color="#26ce8a" indicator-dots autoplay circular>
   <block wx:for="{{banners}}" wx:key="bannerId">
     <swiper-item class="swiper-item">
       <image class="swiper-image" src="{{item.pic}}" bindload="handleSwiperImageLoaded" mode="widthFix"></image>
     </swiper-item>
   </block>
-</swiper>
+</swiper> -->
+<custom-swiper imgUrls="{{banners}}"></custom-swiper>
 
 <!-- 3.热门/华语歌单 -->
-<music-menu-area title="热门歌单" songMenu="{{hotSongMenu}}" wx:if="{{hotSongMenu.length}}"></music-menu-area>
-<music-menu-area title="华语歌单" songMenu="{{chineseSongMenu}}" wx:if="{{chineseSongMenu.length}}"></music-menu-area>
+<music-menu-area title="热门歌单" data-item="热门歌单" bind:headerClick="handleHeaderClick" wx:if="{{hotSongMenu.length}}" songMenu="{{hotSongMenu}}"></music-menu-area>
+<music-menu-area title="华语歌单" data-item="华语歌单" bind:headerClick="handleHeaderClick" wx:if="{{chineseSongMenu.length}}" songMenu="{{chineseSongMenu}}"></music-menu-area>
 
 <!-- 4.推荐歌曲(有值时才进行展示,包括下面) -->
 <view class="recommend-song" wx:if="{{recommendSongs.length}}">
@@ -42,10 +44,4 @@
 </view>
 
 
-<block wx:if="{{recommendSongs.length}}">
-  <view class="box1">box1</view>
-  <view class="box2">box2</view>
-  <view class="box3">box3</view>
-  <view class="box4">box4</view>
-  <view class="box5">box5</view>
-</block>
+<music-bar></music-bar>

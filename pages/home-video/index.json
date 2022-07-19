@@ -1,6 +1,7 @@
 {
   "enablePullDownRefresh": true,
   "backgroundTextStyle": "dark",
+  "component": true,
   "usingComponents": {
     "van-icon": "@vant/weapp/icon/index",
     "van-loading": "@vant/weapp/loading/index",

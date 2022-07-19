@@ -14,7 +14,7 @@ Page({
     hotSongMenu: [],
     chineseSongMenu: [],
     showLoading: true,
-    rankings: { 0: {}, 2: {}, 3: {} } //若直接是个数组,顺序就会不好确定
+    rankings: { 3779629: {}, 2884035: {}, 19723756: {} } //若直接是个数组,顺序就会不好确定
   },
   onLoad(options) {
     this.getPageData(); // 获取页面数据
@@ -32,8 +32,12 @@ Page({
     //   // console.log('拿到了推荐歌曲', this.data.recommendSongs);
     // });
     // 获取<热门/华语歌单>请求-----------
-    getSongMenu().then((res) => this.setData({ hotSongMenu: res.playlists }));
-    getSongMenu('华语').then((res) => this.setData({ chineseSongMenu: res.playlists }));
+    getSongMenu().then((res) => {
+      this.setData({ hotSongMenu: res.playlists });
+    });
+    getSongMenu('华语').then((res) => {
+      this.setData({ chineseSongMenu: res.playlists });
+    });
     // 获取榜单请求(getRankingHandler调用后返回一个函数,这里监听返回的这个函数)-------------
     Object.keys(rankingMap).forEach((idx) => rankingStore.onState(rankingMap[idx], this.getRankingHandler(idx))); // 从store中获取共享的数据(若别的地方把state的值改了,这个代码会自动执行,就会做到数据共享+响应式)
   },
@@ -67,11 +71,17 @@ Page({
       this.setData({ rankings: newRankings });
     };
   },
+  handleRankingItemClick(e) {
+    this.navigateToDetailSongsPage(rankingMap[e.currentTarget.dataset.idx]);
+  },
   handleMoreClick() {
     this.navigateToDetailSongsPage('hotRanking');
   },
-  handleRankingItemClick(event) {
-    this.navigateToDetailSongsPage(rankingMap[event.currentTarget.dataset.idx]);
+  handleHeaderClick(e) {
+    const itemName = e.currentTarget.dataset.item;
+    wx.navigateTo({
+      url: `/pages/detail-menu/index?itemName=${itemName}`
+    });
   },
   navigateToDetailSongsPage(rankingName) {
     // 增加type字段来对不同的跳转方式进行区分

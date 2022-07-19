@@ -12,7 +12,8 @@
     <van-icon name="arrow-up" size="20px" color="#26ce8a" />
   </view>
 </view>
-<view class="loading" wx:if="{{hasMore === true}}">
+
+<view class="loading" wx:if="{{hasMore}}">
   <van-loading color="#26ce8a" />
 </view>
 
@@ -22,3 +23,5 @@
     <text style="color: #fff;">加载MV中...</text>
   </van-loading>
 </view>
+
+<music-bar></music-bar>
