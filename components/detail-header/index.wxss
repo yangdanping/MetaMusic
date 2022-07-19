@@ -104,3 +104,12 @@
 .operation .item .text {
   font-size: 28rpx;
 }
+
+.desc-dialog {
+  padding: 40rpx 20rpx;
+  font-size: 30rpx;
+}
+
+van-dialog button {
+  width: 100% !important;
+}

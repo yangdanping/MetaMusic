@@ -15,7 +15,7 @@
         <image class="avatar" mode="aspectFill" src="{{songInfo.creator.avatarUrl}}"></image>
         <text class="nickname">{{songInfo.creator.nickname}}</text>
       </view>
-      <view class="desc">简介: {{songInfo.description}}</view>
+      <view class="desc" bindtap="showDialog" data-item="{{songInfo}}">简介: {{songInfo.description}}</view>
     </view>
   </view>
   <view class="operation">
@@ -29,3 +29,10 @@
     </view>
   </view>
 </view>
+
+<!-- 简介对话框 -->
+<van-dialog use-slot show="{{ show }}" bind:close="onClose">
+  <view class="desc-dialog">
+    <text>{{description}}</text>
+  </view>
+</van-dialog>

@@ -1,6 +1,6 @@
 <!--pages/detail-menu/index.wxml-->
 <view class="menu-list">
-  <block wx:for="{{playlists}}">
+  <block wx:for="{{playlists}}" wx:key="id">
     <view class="item" data-item="{{item}}" bindtap="handleMenuItemClick">
       <view class="cover">
         <image class="image" mode="widthFix" src="{{item.coverImgUrl}}"></image>

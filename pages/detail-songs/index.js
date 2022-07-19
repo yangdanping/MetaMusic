@@ -7,19 +7,17 @@ Page({
     ranking: '',
     songInfo: {},
     songs: [],
-    type: '',
-    id: '',
+    options: {},
     hasMore: true
   },
   onLoad(options) {
     // 1.获取页面数据
-    const type = options.type;
-    const id = options.id;
-    this.setData({ type, id });
+    const { type, id } = options;
+    this.setData({ options });
     const eventChannel = this.getOpenerEventChannel();
-    eventChannel.on('getMenuData', (data) => {
-      console.log('eventChannel获得封面背景图----------------------------', data);
-      this.setData({ songInfo: data });
+    eventChannel.on('getMenuData', (res) => {
+      console.log('eventChannel获得歌单信息----------------------------', res);
+      this.setData({ songInfo: res });
     });
     this.getSongsDetail(type, id);
   },
@@ -32,7 +30,7 @@ Page({
         this.setData({ hasMore: false, songs: newData });
       });
     } else if (type === 'rank') {
-      const ranking = options.ranking;
+      const { ranking } = this.data.options;
       rankingStore.onState(ranking, this.getRankingDataHandler);
     }
   },
@@ -42,11 +40,12 @@ Page({
   },
   onReachBottom() {
     //只请求菜单内的歌曲
-    if (this.data.type === 'menu') {
-      this.getSongsDetail(this.data.type, this.data.id, this.data.songs.length);
+    const { type, id } = this.data.options;
+    if (type === 'menu') {
+      this.getSongsDetail(type, id, this.data.songs.length);
     }
   },
   getRankingDataHandler(res) {
-    this.setData({ songInfo: res });
+    this.setData({ songInfo: res, songs: res.tracks });
   }
 });
