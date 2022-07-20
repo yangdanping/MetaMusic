@@ -27,7 +27,7 @@ Component({
    * 组件的方法列表
    */
   methods: {
-    handleHeaderClick(){
+    handleMoreClick(){
       this.triggerEvent('headerClick');
     },
     handleMenuItemClick(event) {

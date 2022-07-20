@@ -1,5 +1,5 @@
 <!--components/music-menu-area/index.wxml-->
-<header-title title="{{title}}" bindtap="handleHeaderClick"></header-title>
+<header-title title="{{title}}" bind:moreClick="handleMoreClick"></header-title>
 <!-- 实现穿透效果的方案1 -- 全局获取设备宽度给scroll-view -->
 <!-- <scroll-view class="menu-list-v1" scroll-x style="width:{{screenWidth}}px;"> -->
 <scroll-view class="menu-list-v2" scroll-x>

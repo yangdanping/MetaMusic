@@ -10,7 +10,7 @@ Page({
     searchValue: ''
   },
 
-  onLoad: function (options) {
+  onLoad(options) {
     // 1.获取页面数据
     this.getPageData();
   },
@@ -28,11 +28,11 @@ Page({
     if (!searchValue.length) {
       this.setData({ suggestSongs: [] });
       return;
+    } else {
+      // 4.根据关键字进行搜索
+      debounceGetSearchSuggest(searchValue).then((res) => {
+        this.setData({ suggestSongs: res.result.allMatch });
+      });
     }
-    // 4.根据关键字进行搜索
-    debounceGetSearchSuggest(searchValue).then((res) => {
-      console.log(res);
-      this.setData({ suggestSongs: res.result.allMatch });
-    });
   }
 });

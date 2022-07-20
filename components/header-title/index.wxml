@@ -1,6 +1,11 @@
 <!--components/header-title/index.wxml-->
 <view class="header">
-  <view class="title">{{title}}</view>
+  <view class="left">
+    <view class="refresh">
+      <van-icon name="replay" />
+    </view>
+    <view class="title">{{title}}</view>
+  </view>
   <view class="right" wx:if="{{showRight}}" bindtap="handleRightClick">
     <view class="slot">
       <slot></slot>

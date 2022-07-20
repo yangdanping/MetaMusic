@@ -6,6 +6,15 @@
   height: 88rpx;
 }
 
+.left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.left .refresh {
+  margin-right: 10rpx;
+}
+
 .header .title {
   font-size: 36rpx;
   font-weight: 700;
