@@ -1,8 +1,8 @@
 <!--components/header-title/index.wxml-->
 <view class="header">
   <view class="left">
-    <view class="refresh">
-      <van-icon name="replay" />
+    <view class="refresh" wx:if="{{showRefresh}}" bindtap="handleRefresh">
+      <van-icon name="replay" size="18px" class="{{ rotate?'active':'' }}" />
     </view>
     <view class="title">{{title}}</view>
   </view>

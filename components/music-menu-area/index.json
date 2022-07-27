@@ -2,6 +2,7 @@
   "component": true,
   "usingComponents": {
     "header-title": "/components/header-title/index",
-    "music-menu-item": "/components/music-menu-item/index"
+    "music-menu-item": "/components/music-menu-item/index",
+    "van-dialog": "@vant/weapp/dialog/index"
   }
 }

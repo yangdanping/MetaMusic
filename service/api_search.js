@@ -1,7 +1,8 @@
 import myRequest from './index';
 
 export function getSearchHot() {
-  return myRequest.get('/search/hot');
+  // return myRequest.get('/search/hot');
+  return myRequest.get('/search/hot/detail');
 }
 
 export function getSearchSuggest(keywords) {

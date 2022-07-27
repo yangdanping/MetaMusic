@@ -1,5 +1,5 @@
 import { getSearchHot, getSearchSuggest } from '../../service/api_search';
-import { debounce } from '../../utils/debounce';
+import debounce from '../../utils/debounce';
 const debounceGetSearchSuggest = debounce(getSearchSuggest, 1000);
 
 // pages/detail-search/index.js
@@ -7,7 +7,18 @@ Page({
   data: {
     hotKeywords: [],
     suggestSongs: [],
-    searchValue: ''
+    searchValue: '',
+    songsMenu: [
+      { name: '爱在西元前' },
+      { name: '简单爱' },
+      { name: '爷爷泡的茶' },
+      { name: '听妈妈的话' },
+      { name: '以父之名' },
+      { name: '以父之名' },
+      { name: '以父之名' },
+      { name: '以父之名' },
+      { name: '以父之名' }
+    ]
   },
 
   onLoad(options) {
@@ -16,7 +27,9 @@ Page({
   },
   getPageData() {
     getSearchHot().then((res) => {
-      this.setData({ hotKeywords: res.result.hots });
+      const hotKeywords = res.data.slice(0, 10);
+
+      this.setData({ hotKeywords });
     });
   },
   handleSearchClick(event) {
@@ -31,8 +44,13 @@ Page({
     } else {
       // 4.根据关键字进行搜索
       debounceGetSearchSuggest(searchValue).then((res) => {
+        console.log('all suggestSongs', res.result.allMatch);
         this.setData({ suggestSongs: res.result.allMatch });
       });
     }
+  },
+  handleResultClick(e) {
+    const item = e.currentTarget.dataset.item;
+    console.log('itemitemitem', item);
   }
 });

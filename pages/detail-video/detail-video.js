@@ -59,7 +59,7 @@ Page({
     const vid = event.currentTarget.dataset.item.vid;
     //页面跳转
     wx.navigateTo({
-      url: `/pages/detail-video/index?id=${vid}&type=video`
+      url: `/pages/detail-video/detail-video?id=${vid}&type=video`
     });
   },
   onReachBottom() {

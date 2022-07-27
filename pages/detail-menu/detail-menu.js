@@ -10,12 +10,8 @@ Page({
   onLoad(options) {
     const { itemName } = options;
     console.log('获得歌单名称', itemName);
-    if (itemName === '热门歌单') {
-      this.getSongMenu();
-    } else if (itemName === '华语歌单') {
-      this.getSongMenu('华语');
-      this.setData({ cat: '华语' });
-    }
+    this.getSongMenu(itemName);
+    this.setData({ cat: itemName });
   },
   getSongMenu(cat, offset) {
     getSongMenu(cat, offset).then((res) => {

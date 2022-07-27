@@ -7,15 +7,15 @@
 }
 
 .menu-list-v2 {
+  position: relative;
+  left: -20rpx;
   /* scroll-view若想仅一行显示则必须添加该属性,使其内部item不换行 */
   white-space: nowrap;
   /* 直接用视口宽度作为sv的宽度,实现sv滑动时不会有空白,代替获取设备宽度的方案 */
   width: 100vw;
   /* 因为此时sv宽度为设备宽度且我全局padding:0 20rpx,所以整个sv往右偏了
   所以用相对定位让其向左偏移过来,打开bg观察更明显*/
-  /* background: pink; */
-  position: relative;
-  left: -20rpx;
+  animation: menuMove 0.5s forwards;
 }
 
 .menu-item {
@@ -32,4 +32,13 @@
 /* 该内部最后一个item一个右外边距 */
 .menu-item:last-of-type {
   margin-right: 20rpx;
+}
+
+@keyframes menuMove {
+  0% {
+    transform: translateX(800rpx);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }

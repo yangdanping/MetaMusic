@@ -14,12 +14,12 @@
 <custom-swiper imgUrls="{{banners}}"></custom-swiper>
 
 <!-- 3.热门/华语歌单 -->
-<music-menu-area title="热门歌单" data-item="热门歌单" bind:headerClick="handleHeaderClick" wx:if="{{hotSongMenu.length}}" songMenu="{{hotSongMenu}}"></music-menu-area>
-<music-menu-area title="华语歌单" data-item="华语歌单" bind:headerClick="handleHeaderClick" wx:if="{{chineseSongMenu.length}}" songMenu="{{chineseSongMenu}}"></music-menu-area>
+<music-menu-area songMenu="{{hotSongMenu}}" title="热门歌单" data-item="全部" bind:menuMoreClick="handleMoreClick" bind:menuRefreshClick="handleRefreshClick" wx:if="{{hotSongMenu.length}}"></music-menu-area>
+<music-menu-area songMenu="{{chineseSongMenu}}" title="华语歌单" data-item="华语" bind:menuMoreClick="handleMoreClick" bind:menuRefreshClick="handleRefreshClick" wx:if="{{chineseSongMenu.length}}"></music-menu-area>
 
 <!-- 4.推荐歌曲(有值时才进行展示,包括下面) -->
 <view class="recommend-song" wx:if="{{recommendSongs.length}}">
-  <header-title title="推荐歌曲" bind:moreClick="handleMoreClick"></header-title>
+  <header-title title="推荐歌曲" bind:moreClick="handleMoreClick" bind:refreshClick="handleRefreshClick"></header-title>
   <view class="song-list">
     <block wx:for="{{recommendSongs}}" wx:key="id">
       <music-item-v1 item="{{item}}"></music-item-v1>
@@ -39,7 +39,7 @@
     </block>
   </view>
 </view> -->
-<view class="loading" wx:if="{{showLoading}}">
+<view class="loading" wx:if="{{!recommendSongs.length}}">
   <van-loading color="#26ce8a" />
 </view>
 

@@ -5,28 +5,28 @@
       "list": [
         {
           "name": "home-video",
-          "pathName": "pages/home-video/index",
+          "pathName": "pages/home-video/home-video",
           "query": "",
           "launchMode": "default",
           "scene": null
         },
         {
           "name": "detail-video",
-          "pathName": "pages/detail-video/index",
+          "pathName": "pages/detail-video/detail-video",
           "query": "id=14541972",
           "launchMode": "default",
           "scene": null
         },
         {
           "name": "detail-search",
-          "pathName": "pages/detail-search/index",
+          "pathName": "pages/detail-search/detail-search",
           "query": "",
           "launchMode": "default",
           "scene": null
         },
         {
           "name": "",
-          "pathName": "pages/home-profile/index",
+          "pathName": "pages/home-profile/home-profile",
           "query": "",
           "launchMode": "default",
           "scene": null

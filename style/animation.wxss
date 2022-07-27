@@ -68,6 +68,7 @@
     transform: translateX(0);
   }
 }
+
 @keyframes swipermove {
   0% {
     transform: translateY(-500rpx);

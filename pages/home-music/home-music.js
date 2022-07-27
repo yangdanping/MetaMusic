@@ -13,7 +13,8 @@ Page({
     recommendSongs: [],
     hotSongMenu: [],
     chineseSongMenu: [],
-    showLoading: true,
+    menuRefreshOffset: 10,
+    songRefreshOffset: 0,
     rankings: { 3779629: {}, 2884035: {}, 19723756: {} } //若直接是个数组,顺序就会不好确定
   },
   onLoad(options) {
@@ -47,7 +48,7 @@ Page({
   // 动态获取图片的高度(获取一个组件的高度,而非其原图高度,而且我只需要查询一张图片的高度即可)
   handleSwiperImageLoaded(e) {
     throttleQueryRect('.swiper-image').then((res) => {
-      this.setData({ swiperHeight: res[0].height, showLoading: false });
+      this.setData({ swiperHeight: res[0].height });
     });
   },
   // 关于获取榜单的做法(好好研究,是个前端拿到后端数据做组织的典范)----------------------------
@@ -74,19 +75,65 @@ Page({
   handleRankingItemClick(e) {
     this.navigateToDetailSongsPage(rankingMap[e.currentTarget.dataset.idx]);
   },
-  handleMoreClick() {
-    this.navigateToDetailSongsPage('hotRanking');
-  },
-  handleHeaderClick(e) {
+  handleMoreClick(e) {
     const itemName = e.currentTarget.dataset.item;
-    wx.navigateTo({
-      url: `/pages/detail-menu/index?itemName=${itemName}`
-    });
+    if (itemName) {
+      wx.navigateTo({ url: `/pages/detail-menu/detail-menu?itemName=${itemName}` });
+    } else {
+      this.navigateToDetailSongsPage('hotRanking');
+    }
+  },
+  // handleRefreshClick: debounce(function(e) {
+  //   const that = this;
+  //   const itemName = e.currentTarget.dataset.item;
+  //   this.setData({ menuRefreshOffset: (this.data.menuRefreshOffset += 10) });
+  //   getSongMenu(itemName, this.data.menuRefreshOffset).then((res) => {
+  //     if (itemName === '全部') {
+  //       this.setData({ hotSongMenu: res.playlists });
+  //     } else if (itemName === '华语') {
+  //       this.setData({ chineseSongMenu: res.playlists });
+  //     }
+  //   });
+  // }, 2000),
+  // handleRefreshClick: function (e) {
+  //   debounce(() => {
+  //     const itemName = e.currentTarget.dataset.item;
+  //     this.setData({ menuRefreshOffset: (this.data.menuRefreshOffset += 10) });
+  //     getSongMenu(itemName, this.data.menuRefreshOffset).then((res) => {
+  //       if (itemName === '全部') {
+  //         this.setData({ hotSongMenu: res.playlists });
+  //       } else if (itemName === '华语') {
+  //         this.setData({ chineseSongMenu: res.playlists });
+  //       }
+  //     });
+  //   }, 2000)();
+  // },
+  handleRefreshClick(e) {
+    const itemName = e.currentTarget.dataset.item;
+    if (itemName) {
+      this.setData({ menuRefreshOffset: (this.data.menuRefreshOffset += 10) });
+      getSongMenu(itemName, this.data.menuRefreshOffset).then((res) => {
+        if (itemName === '全部') {
+          this.setData({ hotSongMenu: res.playlists });
+        } else if (itemName === '华语') {
+          this.setData({ chineseSongMenu: res.playlists });
+        }
+      });
+    } else {
+      rankingStore.onState('hotRanking', (res) => {
+        let offset = this.data.songRefreshOffset;
+        if (!offset) {
+          offset += 6;
+        }
+        const recommendSongs = res.tracks.slice(offset, offset + 6);
+        this.setData({ recommendSongs, songRefreshOffset: (offset += 6) });
+      });
+    }
   },
   navigateToDetailSongsPage(rankingName) {
     // 增加type字段来对不同的跳转方式进行区分
     wx.navigateTo({
-      url: `/pages/detail-songs/index?ranking=${rankingName}&type=rank` //跳转通过options拿到
+      url: `/pages/detail-songs/detail-songs?ranking=${rankingName}&type=rank` //跳转通过options拿到
     });
   }
 

@@ -1,4 +1,4 @@
-export function debounce(fn, delay, immediate = false, resultCallback) {
+export default function debounce(fn, delay, immediate = false, resultCallback) {
   // 1.定义一个定时器, 保存上一次的定时器
   let timer = null;
   let isInvoke = false;

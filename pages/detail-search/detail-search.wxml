@@ -1,0 +1,46 @@
+<!--pages/detail-search/index.wxml-->
+<!-- 1.搜索框 -->
+<van-search bind:change="handleSearchClick" value="{{searchValue}}" background="#fafafa" shape="round" placeholder="搜索您喜欢的歌曲" />
+<block wx:if="{{!searchValue.length}}">
+  <!-- -------2.热门搜索------- -->
+  <view class="hot">
+    <header-title title="热门搜索" showRight="{{false}}" showRefresh="{{false}}"></header-title>
+    <view class="list">
+      <block wx:for="{{ hotKeywords }}" wx:key="first">
+        <view class="tag">{{item.searchWord}}</view>
+      </block>
+    </view>
+  </view>
+  <!-- -------3.歌曲卡片------- -->
+  <scroll-view class="card-list" scroll-x>
+    <block wx:for="{{5}}" wx:key="*this">
+      <!-- 由于view是块级元素独占一行,所以要改为inline-block -->
+      <view class="card-item">
+        <header-title title="热搜榜" showRight="{{false}}" showRefresh="{{false}}"></header-title>
+        <view class="songs">
+          <view class="song-item" wx:for="{{ songsMenu }}" wx:key="*this">
+            <view class="index">{{ index + 1 }}</view>
+            <view class="name">{{ item.name }}</view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+
+</block>
+<!-- 3.建议搜索 -->
+<!-- 用rich-text代替原来的text -->
+<block wx:else>
+  <view class="suggest">
+    <view class="title">搜索"{{searchValue}}"</view>
+    <view class="list">
+      <block wx:for="{{suggestSongs}}" wx:key="keyword">
+        <view class="item" data-item="{{item}}" bindtap="handleResultClick">
+          <text>{{item.keyword}}</text>
+          <!-- <rich-text nodes="" class="text">{{item.keyword}}</rich-text> -->
+        </view>
+      </block>
+    </view>
+  </view>
+
+</block>
