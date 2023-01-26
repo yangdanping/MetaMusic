@@ -12,7 +12,7 @@ page {
   background: #f6f6f6;
 }
 
-.video-container > video {
+.video-container > .video {
   width: 100%;
 }
 
@@ -58,6 +58,7 @@ page {
 .video-info .name {
   margin-left: 20rpx;
   font-size: 30rpx;
+  text-overflow: ellipsis;
 }
 
 .love {

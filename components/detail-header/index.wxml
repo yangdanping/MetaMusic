@@ -18,6 +18,7 @@
       <view class="desc" bindtap="showDialog" data-item="{{songInfo}}">简介: {{songInfo.description}}</view>
     </view>
   </view>
+  <!-- 操作(收藏、分享) -->
   <view class="operation">
     <view class="favor item">
       <image class="icon" mode="widthFix" src="/assets/images/icons/favor_icon.png"></image>

@@ -21,8 +21,8 @@ export function getMVInfo(mvid) {
   return myRequest.get('/mv/detail/info', { mvid });
 }
 
-export function getMVComment(offset,id) {
-  return myRequest.get('/comment/mv', {offset, id });
+export function getMVComment(id, offset) {
+  return myRequest.get('/comment/mv', { id, offset });
 }
 
 // 视频--------------------------------------------------------------------------------------

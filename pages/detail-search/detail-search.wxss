@@ -1,6 +1,13 @@
 /* pages/detail-search/index.wxss */
 page {
-  padding: 0 20rpx;
+  padding: 112rpx 20rpx 0 20rpx;
+}
+
+.search {
+  position: fixed;
+  top: 0;
+  left: 20rpx;
+  right: 20rpx;
 }
 
 /* 热门搜索 */
@@ -17,9 +24,10 @@ page {
   font-size: 26rpx;
   background-color: #fff;
   padding: 10rpx 12rpx;
-  border-radius: 16rpx;
+  border-radius: 10rpx;
   margin-right: 20rpx;
   margin-top: 20rpx;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .hot .tag:first-of-type {
@@ -30,7 +38,7 @@ page {
 .suggest {
   padding: 10rpx;
 }
-
+.result .title,
 .suggest .title {
   color: #26ce8a;
   font-size: 34rpx;

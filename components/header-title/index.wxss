@@ -40,7 +40,7 @@
 }
 /* 下面是在小程序中实现默认slot的方法 */
 .header .default {
-  /* 这里先设置none,配合下面的选择器 */
+  /* 这里先默认设置为none,配合下面的选择器来实现默认插槽 */
   display: none;
   align-items: center;
   font-size: 28rpx;
@@ -48,9 +48,10 @@
 }
 
 /* 这里模拟实现vue中默认slot(:empty是伪类,+表示给.slot加选择器)
-这里意思就是:当.slot没有子元素时,给.slot加上.default选择器内的属性
+这里意思就是:当.slot为空(没有子元素)时,显示.default里面的东西,即给.default加上如下属性
 这就是连接选择器的使用 */
 .header .slot:empty + .default {
+  /* 将原来的none改为flex;让.default的内容显示出来 */
   display: flex;
 }
 

@@ -16,7 +16,7 @@
 
 
 
-
+<!-- 加载组件---------------------------------------- -->
 <view class="loading" wx:if="{{hasMore}}">
   <van-loading color="#26ce8a" />
 </view>

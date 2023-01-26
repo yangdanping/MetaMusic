@@ -2,11 +2,13 @@
 page {
   background-color: #fafafa;
   box-sizing: border-box;
+  color: #666;
   /* 全局设置box-sizing:border-box,解决page设置padding后页面变大的问题 */
 }
 
 .van-search {
   padding: 10px 0 !important;
+  /* search组件去除左右两边默认的间距 */
 }
 
 .van-search__content {

@@ -1,11 +1,13 @@
 <!--components/header-title/index.wxml-->
 <view class="header">
+  <!-- 左边是标题名称 -->
   <view class="left">
     <view class="refresh" wx:if="{{showRefresh}}" bindtap="handleRefresh">
       <van-icon name="replay" size="18px" class="{{ rotate?'active':'' }}" />
     </view>
     <view class="title">{{title}}</view>
   </view>
+  <!-- 右边显示(并且用css的连接选择器实现小程序的插槽) -->
   <view class="right" wx:if="{{showRight}}" bindtap="handleRightClick">
     <view class="slot">
       <slot></slot>

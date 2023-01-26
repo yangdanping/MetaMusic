@@ -1,0 +1,7 @@
+/* components/loading/index.wxss */
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -8,3 +8,6 @@ export function getSearchHot() {
 export function getSearchSuggest(keywords) {
   return myRequest.get('/search/suggest', { keywords, type: 'mobile' });
 }
+export function getSearchResult(keywords, offset, limit) {
+  return myRequest.get('/cloudsearch', { keywords, offset, limit });
+}

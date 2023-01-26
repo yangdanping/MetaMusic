@@ -1,9 +1,9 @@
 <!--pages/home-music/index.wxml-->
 <!-- 1.搜索框(我们这里设置首页是不能搜索,点击后进入搜索页面) -->
 <van-search bind:click-input="handleSearchClick" background="#fafafa" shape="round" placeholder="搜索您喜欢的歌曲" disabled />
+
 <!-- 2.轮播图(注意!swiper默认最大高度为150px,所以要动态设置轮播图组件swiper的高度,必须永远与图片高度保持一致)
 使用image的bindload事件 -- 当图片载入完毕时触发,注意默认给我们的event.detail = {height, width}是原始图片高度,是不能用的,要通过另外一个方法获取到 -->
-
 <!-- <swiper class="swiper" style="height: {{swiperHeight}}px;" indicator-active-color="#26ce8a" indicator-dots autoplay circular>
   <block wx:for="{{banners}}" wx:key="bannerId">
     <swiper-item class="swiper-item">
@@ -13,7 +13,7 @@
 </swiper> -->
 <custom-swiper imgUrls="{{banners}}"></custom-swiper>
 
-<!-- 3.热门/华语歌单 -->
+<!-- 3.热门/华语歌单(封装为music-menu-area组件,其中又包含了作为标题的header-title和子组件music-menu-item) -->
 <music-menu-area songMenu="{{hotSongMenu}}" title="热门歌单" data-item="全部" bind:menuMoreClick="handleMoreClick" bind:menuRefreshClick="handleRefreshClick" wx:if="{{hotSongMenu.length}}"></music-menu-area>
 <music-menu-area songMenu="{{chineseSongMenu}}" title="华语歌单" data-item="华语" bind:menuMoreClick="handleMoreClick" bind:menuRefreshClick="handleRefreshClick" wx:if="{{chineseSongMenu.length}}"></music-menu-area>
 
@@ -31,14 +31,14 @@
 <!-- 5.巅峰榜 -->
 <!-- 注意!1.小程序中支持对对象进行遍历(此时,对象的value是item,key是index)
      2.data-idx的idx放到了点击事件的event.currentTarget.dataset中 -->
-<!-- <view class="ranking">
-  <header-title title="巅峰榜" showRight="{{false}}"></header-title>
+<view class="ranking">
+  <header-title title="巅峰榜" showRefresh="{{false}}" showRight="{{false}}"></header-title>
   <view class="ranking-list">
     <block wx:for="{{rankings}}" wx:key="name">
       <ranking-item item="{{item}}" data-idx="{{index}}" bindtap="handleRankingItemClick"></ranking-item>
     </block>
   </view>
-</view> -->
+</view>
 <view class="loading" wx:if="{{!recommendSongs.length}}">
   <van-loading color="#26ce8a" />
 </view>

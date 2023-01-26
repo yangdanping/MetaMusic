@@ -1,19 +1,21 @@
 <!--pages/detail-search/index.wxml-->
 <!-- 1.搜索框 -->
-<van-search bind:change="handleSearchClick" value="{{searchValue}}" background="#fafafa" shape="round" placeholder="搜索您喜欢的歌曲" />
-<block wx:if="{{!searchValue.length}}">
-  <!-- -------2.热门搜索------- -->
-  <view class="hot">
+<van-search class="search" bind:change="handleSearchChange" bind:search="handleSearchAction" value="{{searchValue}}" show-action="{{searchValue.length|| suggestSongs.length}}" background="#fafafa" shape="round" placeholder="搜索您喜欢的歌曲" />
+<!-- 这里要丰富判断逻辑,已满足不同内容的显示(如最佳匹配) -->
+<block wx:if="{{!searchValue.length && !suggestSongs.length}}">
+  <!-- 2.热门搜索------- -->
+  <loading wx:if="{{!hotKeywords.length}}" />
+  <view class="hot" wx:else>
     <header-title title="热门搜索" showRight="{{false}}" showRefresh="{{false}}"></header-title>
     <view class="list">
       <block wx:for="{{ hotKeywords }}" wx:key="first">
-        <view class="tag">{{item.searchWord}}</view>
+        <view class="tag" bindtap="handleKeywordItemClick" data-keyword="{{item.searchWord}}">{{item.searchWord}}</view>
       </block>
     </view>
   </view>
-  <!-- -------3.歌曲卡片------- -->
+  <!-- 3.歌曲卡片------- -->
   <scroll-view class="card-list" scroll-x>
-    <block wx:for="{{5}}" wx:key="*this">
+    <block wx:for="{{3}}" wx:key="*this">
       <!-- 由于view是块级元素独占一行,所以要改为inline-block -->
       <view class="card-item">
         <header-title title="热搜榜" showRight="{{false}}" showRefresh="{{false}}"></header-title>
@@ -28,19 +30,28 @@
   </scroll-view>
 
 </block>
-<!-- 3.建议搜索 -->
-<!-- 用rich-text代替原来的text -->
-<block wx:else>
-  <view class="suggest">
-    <view class="title">搜索"{{searchValue}}"</view>
-    <view class="list">
-      <block wx:for="{{suggestSongs}}" wx:key="keyword">
-        <view class="item" data-item="{{item}}" bindtap="handleResultClick">
-          <text>{{item.keyword}}</text>
-          <!-- <rich-text nodes="" class="text">{{item.keyword}}</rich-text> -->
-        </view>
-      </block>
-    </view>
+<!-- 4.建议搜索(仅当suggestSongs有值时且resultSongs没有值时显示,即没有搜索结果才需要显示建议) -->
+<view class="suggest" wx:elif="{{suggestSongs.length  && !resultSongs.length}}">
+  <view class="title">搜索"{{searchValue}}"</view>
+  <view class="list">
+    <block wx:for="{{suggestSongs}}" wx:key="keyword">
+      <view class="item" data-keyword="{{item.keyword}}" bindtap="handleKeywordItemClick">
+        <image class="icon" mode="widthFix" src="/assets/images/icons/search_icon.png"></image>
+        <!-- <text class="text">{{item.keyword}}</text> -->
+        <!-- 用rich-text代替原来的text,nodes即节点列表/HTML String,把文本划分为节点,需要告诉每个节点如何显示 -->
+        <rich-text nodes="{{suggestSongsNodes[index]}}"></rich-text>
+      </view>
+    </block>
   </view>
+</view>
 
-</block>
+<!-- 5.搜索结果 -->
+<view class="result" wx:elif="{{resultSongs.length}}">
+  <view class="title">最佳匹配</view>
+  <view class="list">
+    <block wx:for="{{resultSongs}}" wx:key="id">
+      <music-item-v2 item="{{item}}" index="{{index+1}}"></music-item-v2>
+    </block>
+  </view>
+  <loading wx:if="{{HasMoreResultSongs}}" />
+</view>

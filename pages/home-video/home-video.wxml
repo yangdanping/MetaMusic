@@ -1,23 +1,46 @@
 <!--pages/home-video/index.wxml-->
+
+
 <view class="video-container" wx:if="{{mvURLInfo.url}}">
   <van-icon bindtap="colseVideo" color="#fff" size="30px" class="colse-icon" name="cross" />
   <video picture-in-picture-mode="{{['push', 'pop']}}" class="video-detail" src="{{mvURLInfo.url}}" show-mute-btn enable-play-gesture></video>
 </view>
+<!-- video页面------------------------------------------------------------- -->
+
+<!-- 其中.item已抽取到/components/video-item-v1/index -->
+<!-- <view class="video">
+  <block wx:for="{{topMVs}}" wx:key="id">
+    <view class="item">
+      <view class="album">
+        <image class="image" src="{{item.cover}}" mode="widthFix"></image>
+        <view class="info">
+          <view class="count">{{format.formatCount(item.playCount)}}</view>
+          <view class="duration">{{format.formatDuration(item.mv.videos[0].duration)}}</view>
+        </view>
+      </view>
+      <view class="content">{{item.name}} - {{item.artistName}}</view>
+    </view>
+  </block>
+</view> -->
 
 <view class="video">
-  <view class="item" wx:for="{{topMVs}}" wx:key="id">
+  <view class="item-wrap" wx:for="{{topMVs}}" wx:key="id">
     <video-item-v1 bindlongpress="handleLongPress" bindtap="handleVideoItemClick" data-item="{{item}}" item="{{item}}"></video-item-v1>
   </view>
+  <!-- 返回上层箭头,已用声明周期函数监听onPageScroll,记录了e.scrollTop -->
   <view wx:if="{{scrollTop > 500}}" class="backTop" bindtap="backTop">
     <van-icon name="arrow-up" size="20px" color="#26ce8a" />
   </view>
 </view>
 
+<!-- ----------------------------------------------------------------------- -->
+
+
 <view class="loading" wx:if="{{hasMore}}">
   <van-loading color="#26ce8a" />
 </view>
 
-<!-- 加载组件---------------------------------------- -->
+<!-- 长按视频后的加载组件---------------------------------------- -->
 <view class="video-loading" wx:if="{{showLoading}}">
   <van-loading size="40px" text-size="18px" color="#26ce8a" vertical>
     <text style="color: #fff;">加载MV中...</text>

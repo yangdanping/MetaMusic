@@ -35,7 +35,7 @@ Component({
     },
     handleMenuItemClick(event) {
       const id = event.currentTarget.dataset.item.id;
-      // 增加type字段来对不同的跳转方式进行区分
+      // 增加type字段menu来对不同的类型跳转方式进行区分
       wx.navigateTo({
         url: `/pages/detail-songs/detail-songs?id=${id}&type=menu`,
         success(res) {

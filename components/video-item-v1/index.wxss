@@ -1,6 +1,6 @@
 /* components/video-item-v1/index.wxss */
 
-/* 变为组件抽离到这里时,为了使flex布局生效,那边外面包裹的block改为width:48%的view,然后这里改为100% */
+/* 变为组件抽离到这里时,为了使flex布局生效,那边外面包裹的view改为width:48%的view,然后这里改为100% */
 .item {
   width: 100%;
   margin-bottom: 30rpx;
