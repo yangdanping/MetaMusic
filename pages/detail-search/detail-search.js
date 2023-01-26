@@ -63,15 +63,22 @@ Page({
     // 2.保存关键字
     this.setData({ searchValue });
     // 3.判断关键字为空字符的处理逻辑
-
     if (!searchValue.length) {
       this.setData({ suggestSongs: [], resultSongs: [], suggestSongsNodes: [] }); //符合页面的判断逻辑
+      // 注意!就算searchValue为空,防抖后,上一次已延迟的请求已发送,所以要把已网络请求取消掉来解决这个bug
+      debounceGetSearchSuggest.cancel();
       return;
     } else {
       // 4.根据关键字进行搜索
       debounceGetSearchSuggest(searchValue).then((res) => {
+        // if (!this.data.searchValue.length) {
+        //   console.log('searchValue 没有值');
+        //   return;
+        // }
         // 1.获取由关键字搜索到的完整的建议歌曲信息
         const suggestSongs = res.result?.allMatch;
+        console.log('suggestSongssuggestSongssuggestSongs', suggestSongs);
+        if (!suggestSongs) return;
         this.setData({ suggestSongs });
         // 2.转成nodes节点,以便实现富文本匹配
         const suggestKeywords = suggestSongs?.map((item) => item.keyword);
