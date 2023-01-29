@@ -32,10 +32,10 @@
     </view>
     <view class="lyric" wx:if="{{isMusicLyric}}">我是歌词</view>
     <view class="progress">
-      <slider class="slider" block-size="{{12}}"></slider>
+      <slider class="slider" value="{{sliderValue}}" block-size="{{12}}" bindchange="handleSliderChange" bindchanging="handleSliderChanging"></slider>
       <view class="time">
-        <view class="current">{{time}}</view>
-        <view class="duration">{{format.formatDuration(songInfo.duration)}}</view>
+        <view class="current">{{format.formatDuration(currentTime)}}</view>
+        <view class="duration">{{format.formatDuration(durationTime)}}</view>
       </view>
     </view>
     <view class="operation">

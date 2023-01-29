@@ -15,7 +15,10 @@ Page({
     isMusicLyric: deviceRadio > 1.78 ? true : false, //根据屏幕比例动态决定是否显示歌词
     modes: ['order', 'random', 'repeat'],
     mode: 'order',
-    time: '00:00'
+    durationTime: 0, //歌曲时长
+    currentTime: 0, //当前播放时长
+    sliderValue: 0, //滑块进度
+    isSliderChanging: false //用来控制拖拽进度条时,进度条是否改变value
   },
 
   /**
@@ -37,6 +40,17 @@ Page({
       this.setData({ isContinuePlay: true });
       audioContext.play();
     });
+    // 完成更新时间与进度条的逻辑
+    audioContext.onTimeUpdate(() => {
+      // 1.改变时间 -> 传来的是s,*1000得到ms
+      const currentTime = audioContext.currentTime * 1000;
+      // 2.改变进度条 -> 由于slider的值是0~100,所以要*100得到可用于动态修改slider的真实值
+      // 当且仅当没有在拖拽中,sliderValue值才改变
+      if (!this.data.isSliderChanging) {
+        const sliderValue = (currentTime / this.data.durationTime) * 100;
+        this.setData({ currentTime, sliderValue });
+      }
+    });
   },
   getPageData(id) {
     getSongDetail(id).then((res) => {
@@ -49,10 +63,9 @@ Page({
         album: {
           id: song.al.id,
           name: song.al.name
-        },
-        duration: song.dt //歌曲时长
+        }
       };
-      this.setData({ songInfo });
+      this.setData({ songInfo, durationTime: song.dt });
     });
   },
 
@@ -88,5 +101,26 @@ Page({
       this.setData({ isContinuePlay: !isContinuePlay });
       audioContext.play();
     }
+  },
+  // slider事件:点击，拖拽
+  handleSliderChange(e) {
+    console.log('handleSliderChange', e);
+    // 1.获取slider变化的值(返回0~100) e.detail
+    const sliderValue = e.detail.value;
+    // 2.计算出需要播放的currentTime
+    const currentTime = (this.data.durationTime * sliderValue) / 100 / 1000; //注意seek()参数需要以秒为单位,所以为了得到s要/1000,
+    // 3.设置context播放currentTime位置的音乐(最好先暂停,以保证缓存)
+    audioContext.pause();
+    audioContext.seek(currentTime);
+    // 4.记录最新的sliderValue(注意,拖拽后要isSliderChanging改为false,完成可以继续修改sliderValue和currentTime的逻辑)
+    this.setData({ sliderValue, isSliderChanging: false });
+  },
+  handleSliderChanging(e) {
+    console.log('handleSliderChanging', e);
+    // 拖拽时同时改变时间
+    const sliderValue = e.detail.value;
+    const currentTime = (this.data.durationTime * sliderValue) / 100;
+    // isSliderChanging改为true,解决拖拽时,handleSliderChange事件也同时在该sliderValue产生的圆点跳动问题
+    this.setData({ currentTime, isSliderChanging: true });
   }
 });
