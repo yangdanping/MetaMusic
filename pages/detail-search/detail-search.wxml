@@ -15,17 +15,20 @@
   </view>
   <!-- 3.歌曲卡片------- -->
   <scroll-view class="card-list" scroll-x>
-    <block wx:for="{{3}}" wx:key="*this">
-      <!-- 由于view是块级元素独占一行,所以要改为inline-block -->
-      <view class="card-item">
-        <header-title title="热搜榜" showRight="{{false}}" showRefresh="{{false}}"></header-title>
-        <view class="songs">
-          <view class="song-item" wx:for="{{ songsMenu }}" wx:key="*this">
-            <view class="index">{{ index + 1 }}</view>
-            <view class="name">{{ item.name }}</view>
+    <block wx:for="{{rankings}}" wx:key="*this">
+      <loading wx:if="{{!item.songList.length}}" />
+      <block wx:else>
+        <!-- 由于view是块级元素独占一行,所以要改为inline-block -->
+        <view class="card-item">
+          <header-title title="{{item.name}}" showRight="{{false}}" showRefresh="{{false}}"></header-title>
+          <view class="songs">
+            <view class="song-item" bindtap="handleSongItemClick" data-item="{{listItem}}" wx:for="{{ item.songList }}" wx:for-item="listItem" wx:key="*this">
+              <view class="index">{{ index + 1 }}</view>
+              <view class="name">{{ listItem.name }}</view>
+            </view>
           </view>
         </view>
-      </view>
+      </block>
     </block>
   </scroll-view>
 

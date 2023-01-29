@@ -4,7 +4,10 @@ Component({
    * 组件的属性列表
    */
   properties: {
-    imgUrls: Array
+    imgUrls: {
+      type: Array,
+      value: []
+    }
   },
 
   /**
@@ -14,6 +17,11 @@ Component({
     currentIndex: 0
   },
 
+  lifetimes: {
+    ready() {
+      // console.log('imgUrlsimgUrlsimgUrls', this.data.imgUrls);
+    }
+  },
   /**
    * 组件的方法列表
    */

@@ -1,6 +1,7 @@
 // pages/detail-songs/index.js
 import { rankingStore } from '../../store/index';
 import { getSongsDetail } from '../../service/api_music';
+import { getAlbumDetail } from '../../service/api_player';
 
 Page({
   data: {
@@ -18,22 +19,40 @@ Page({
   },
   getSongsDetail(type, id, offset = 0) {
     const eventChannel = this.getOpenerEventChannel();
-    eventChannel.on('getMenuData', (res) => {
-      console.log('eventChannel获得歌单信息----------------------------', res);
-      this.setData({ songInfo: res });
-    });
-    // 这里写死hasMore仅仅是为了让加载中显示出来,传入数据并没有hasMore
-    this.setData({ hasMore: true });
-    if (type === 'menu') {
-      getSongsDetail(id, offset).then((res) => {
-        console.log('getSongsDetailgetSongsDetailgetSongsDetailgetSongsDetail', res);
-        let newData = this.data.songs;
-        newData = offset === 0 ? res.songs : newData.concat(res.songs);
-        this.setData({ hasMore: false, songs: newData });
+    if (type !== 'album') {
+      eventChannel.on('getMenuData', (res) => {
+        console.log('eventChannel获得歌单信息----------------------------', res);
+        this.setData({ songInfo: res });
       });
-    } else if (type === 'rank') {
-      const { ranking } = this.data.options;
-      rankingStore.onState(ranking, this.getRankingDataHandler());
+    } else {
+      // 这里写死hasMore仅仅是为了让加载中显示出来,传入数据并没有hasMore
+      this.setData({ hasMore: true });
+      if (type === 'menu') {
+        getSongsDetail(id, offset).then((res) => {
+          console.log('getSongsDetailgetSongsDetailgetSongsDetailgetSongsDetail', res);
+          let newData = this.data.songs;
+          newData = offset === 0 ? res.songs : newData.concat(res.songs);
+          this.setData({ hasMore: false, songs: newData });
+        });
+      } else if (type === 'rank') {
+        const { ranking } = this.data.options;
+        rankingStore.onState(ranking, this.getRankingDataHandler());
+      } else if (type === 'album') {
+        getAlbumDetail(id, offset).then((res) => {
+          console.log('getAlbumDetail res', res);
+          const songInfo = {
+            name: res.album.name,
+            coverImgUrl: res.album.picUrl,
+            creator: {
+              nickname: res.album.artist.name,
+              avatarUrl: res.album.artist.picUrl
+            },
+            description: res.album.description,
+            playCount: res.album.info.shareCount
+          };
+          this.setData({ hasMore: false, songs: res.songs, songInfo });
+        });
+      }
     }
   },
   getRankingDataHandler() {

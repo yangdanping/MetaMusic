@@ -1,7 +1,9 @@
 import { getSearchHot, getSearchSuggest, getSearchResult } from '../../service/api_search';
+import { rankingStore, rankingMap } from '../../store/index';
 import debounce from '../../utils/debounce';
 const debounceGetSearchSuggest = debounce(getSearchSuggest, 500);
-
+const hotKeywordsCount = 10; //热门搜索默认更新10条
+const songCount = 9; //热门歌曲默认更新6条
 // pages/detail-search/index.js
 Page({
   data: {
@@ -10,17 +12,7 @@ Page({
     resultSongs: [],
     HasMoreResultSongs: false,
     searchValue: '',
-    songsMenu: [
-      { name: '爱在西元前' },
-      { name: '简单爱' },
-      { name: '爷爷泡的茶' },
-      { name: '听妈妈的话' },
-      { name: '止战之殇' },
-      { name: '以父之名' },
-      { name: '以父之名' },
-      { name: '以父之名' },
-      { name: '以父之名' }
-    ],
+    rankings: { 3779629: {}, 2884035: {}, 19723756: {} }, //若直接是个数组,顺序就会不好确定
     // 富文本node节点
     suggestSongsNodes: [
       /* 
@@ -49,10 +41,27 @@ Page({
     this.getPageData();
   },
   getPageData() {
+    rankingStore.dispatch('getRankingDataAction'); //发起共享数据请求
+    Object.keys(rankingMap).forEach((idx) => rankingStore.onState(rankingMap[idx], this.getRankingHandler(idx))); // 从store中获取共享的数据(若别的地方把state的值改了,这个代码会自动执行,就会做到数据共享+响应式)
     getSearchHot().then((res) => {
-      const hotKeywords = res.data.slice(0, 10);
+      const hotKeywords = res.data.slice(0, hotKeywordsCount);
       this.setData({ hotKeywords });
     });
+  },
+  getRankingHandler(idx) {
+    return (res) => {
+      console.log('getRankingHandler res', res);
+      if (!Object.keys(res).length) return; //第一次拿到的我们在store中初始化的空对象,当我们有新数据的时候,就可以重新回调这个函数,拿到新数据
+      //若是热门榜,则作为推荐歌曲展示------------------------------
+      if (rankingMap[idx] === 'hotRanking') {
+        const recommendSongs = res.tracks.slice(0, songCount);
+        this.setData({ recommendSongs });
+        return;
+      }
+      const rankingObj = { name: res.name, songList: res.tracks.slice(0, songCount) };
+      const newRankings = { ...this.data.rankings, [idx]: rankingObj };
+      this.setData({ rankings: newRankings });
+    };
   },
   // 通过bind:change来监听输入时间
   handleSearchChange(event) {
@@ -145,6 +154,12 @@ Page({
       } else {
         this.setData({ resultSongs, HasMoreResultSongs: false, suggestSongs: [] });
       }
+    });
+  },
+  handleSongItemClick(e) {
+    const { id } = e.currentTarget.dataset.item;
+    wx.navigateTo({
+      url: `/pages/music-player/music-player?id=${id}`
     });
   },
   onReachBottom() {

@@ -40,9 +40,7 @@
   "style": "v2",
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents",
-  "requiredBackgroundModes": [
-    "audio"
-  ],
+  "requiredBackgroundModes": ["audio"],
   "usingComponents": {
     "music-bar": "/components/music-bar/index"
   }

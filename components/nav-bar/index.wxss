@@ -1,0 +1,34 @@
+/* components/nav-bar/index.wxss */
+
+.nav-container {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  /*一般手机导航是44px */
+  height: 44px;
+  align-items: center;
+  padding: 0 20rpx;
+}
+
+.center {
+  flex: 1;
+}
+
+.left .left-arrow .icon {
+  width: 44rpx;
+  /* 消除图片的经典三像素 */
+  display: block;
+}
+
+/* 在小程序中实现默认插槽 */
+
+.left-arrow,
+.center-title {
+  display: none;
+}
+
+/* .left-slot内没有子元素(组件没有传入插槽),则.left-arrow内容显示 */
+.left-slot:empty + .left-arrow,
+.center-slot:empty + .center-title {
+  display: block;
+}
