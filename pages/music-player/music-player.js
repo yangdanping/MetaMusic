@@ -1,22 +1,33 @@
 // pages/music-player/music-player.js
-import { getSongDetail, getAlbumDetail } from '../../service/api_player';
+import { getSongDetail, getSongLyric } from '../../service/api_player';
 const { screenHeight, statusBarHeight, navBarHeight, deviceRadio } = getApp().globalData;
 const contentHeight = screenHeight - statusBarHeight - navBarHeight; // 动态计算内容高度
 import { audioContext } from '../../store/index'; //在另一个文件单独存放audioContext
+import { parseLyric } from '../../utils/parse-lyric';
+
+const lyricItemHeight = 35; //每个歌词item的高度为35px
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    songInfo: {},
-    currentPage: 0,
-    contentHeight,
-    isContinuePlay: false,
-    isMusicLyric: deviceRadio > 1.78 ? true : false, //根据屏幕比例动态决定是否显示歌词
-    modes: ['order', 'random', 'repeat'],
+    //歌曲数据(为了实现数据共享,将歌曲逻辑抽取到store中)----------------------------------
+    songInfo: {}, //歌曲信息(通过网络请求得到)
+    lyricInfo: [], //歌词信息(通过网络请求得到)
+    durationTime: 0, //歌曲时长(通过网络请求得到)
+    isPlaying: false,
+    modes: ['order', 'repeat', 'random'], //设置数组来保存播放模式
     mode: 'order',
-    durationTime: 0, //歌曲时长
     currentTime: 0, //当前播放时长
+    currentLyric: '',
+    currentLyricIndex: 0,
+
+    //页面数据----------------------------------
+    lyricScrollTop: 0, //由每个lyricItemHeight计算出来歌词滚动的距离
+    lyricItemHeight, //每个歌词item的高度为35px
+    contentHeight, // 动态计算歌曲内容高度
+    currentPage: 0, // 控制歌曲内容/歌词页面
+    isMusicLyric: deviceRadio > 1.78 ? true : false, //根据屏幕比例动态决定是否显示歌词
     sliderValue: 0, //滑块进度
     isSliderChanging: false //用来控制拖拽进度条时,进度条是否改变value
   },
@@ -28,7 +39,10 @@ Page({
     const { id } = options;
     console.log('song id', id);
     this.getPageData(id);
+    this.setupAudioContextListener(id);
+  },
 
+  setupAudioContextListener(id) {
     // 使用全局的audioContext
     audioContext.stop(); //切歌
     // 服务器获取音频流 -> 客户端 -> 解码 -> 播放
@@ -37,8 +51,10 @@ Page({
     // 由于需要上述流程,所以最好监听播放事件,能播的时候才播
     // audioContext.autoplay = true;
     audioContext.onCanplay(() => {
-      this.setData({ isContinuePlay: true });
-      audioContext.play();
+      this.setData({ isPlaying: true });
+      if (this.data.isPlaying) {
+        audioContext.play();
+      }
     });
     // 完成更新时间与进度条的逻辑
     audioContext.onTimeUpdate(() => {
@@ -49,6 +65,16 @@ Page({
       if (!this.data.isSliderChanging) {
         const sliderValue = (currentTime / this.data.durationTime) * 100;
         this.setData({ currentTime, sliderValue });
+      }
+      // 3.根据当前时间查找要播放的歌词
+      // 获取当前的currentTime,currentTime与每一行歌词时间逐一对比,若某行的歌词时间小于currentTime,这行的前一行就是要匹配的歌词
+      const currentIndex = this.data.lyricInfo.findIndex((item) => item?.time && currentTime < item?.time) - 1;
+      console.log('currentIndex', currentIndex);
+      // 避免重复设置
+      if (this.data.currentLyricIndex !== currentIndex) {
+        const currentLyric = this.data.lyricInfo[currentIndex]?.text;
+        this.setData({ currentLyric, currentLyricIndex: currentIndex, lyricScrollTop: currentIndex * lyricItemHeight });
+        console.log('当前歌词', currentLyric);
       }
     });
   },
@@ -67,6 +93,12 @@ Page({
       };
       this.setData({ songInfo, durationTime: song.dt });
     });
+    getSongLyric(id).then((res) => {
+      const lyricString = res.lrc.lyric;
+      const lyricInfo = parseLyric(lyricString);
+      this.setData({ lyricInfo });
+      console.log('歌词信息', this.data.lyricInfo);
+    });
   },
 
   handleAlbumClick(e) {
@@ -80,9 +112,9 @@ Page({
     this.setData({ currentPage: current });
   },
   changeMode(e) {
-    const mode = e.currentTarget.dataset.mode;
     const modes = this.data.modes;
-    let nextIndex = modes.findIndex((item) => item === mode);
+    const currentMode = e.currentTarget.dataset.mode;
+    let nextIndex = modes.findIndex((mode) => mode === currentMode);
     if (nextIndex >= 2) {
       nextIndex = 0;
     } else {
@@ -91,16 +123,11 @@ Page({
     console.log('mode', modes[nextIndex]);
     this.setData({ mode: modes[nextIndex] });
   },
-  pause() {
-    console.log('pausepausepause');
-    const isContinuePlay = this.data.isContinuePlay;
-    if (isContinuePlay) {
-      this.setData({ isContinuePlay: !isContinuePlay });
-      audioContext.pause();
-    } else {
-      this.setData({ isContinuePlay: !isContinuePlay });
-      audioContext.play();
-    }
+  changeStatus() {
+    console.log('changeStatus', `${this.data.isPlaying ? '暂停' : '播放'}`);
+    const isPlaying = this.data.isPlaying;
+    this.setData({ isPlaying: !isPlaying });
+    this.data.isPlaying ? audioContext.play() : audioContext.pause();
   },
   // slider事件:点击，拖拽
   handleSliderChange(e) {
@@ -122,5 +149,9 @@ Page({
     const currentTime = (this.data.durationTime * sliderValue) / 100;
     // isSliderChanging改为true,解决拖拽时,handleSliderChange事件也同时在该sliderValue产生的圆点跳动问题
     this.setData({ currentTime, isSliderChanging: true });
+  },
+  goBack() {
+    console.log('goBack');
+    wx.navigateBack();
   }
 });

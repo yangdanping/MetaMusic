@@ -94,6 +94,9 @@ page {
   /* height: 200rpx; */
   border-radius: 12rpx;
   font-size: 38rpx;
+  text-align: center;
+  color: #26ce8a;
+  padding: 10rpx;
   background: rgba(0, 0, 0, 0.2);
 }
 
@@ -140,4 +143,40 @@ page {
 .operation .btn-pause {
   width: 130rpx;
   height: 130rpx;
+}
+
+/* 歌词分页 */
+
+.lyric-list {
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
+}
+
+.lyric-list .item {
+  /* height: 35px;
+  line-height: 35px; */
+  font-size: 38rpx;
+  text-align: center;
+  color: #989898;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lyric-list .item:first-of-type {
+  padding-top: 500rpx;
+}
+.lyric-list .item:last-of-type {
+  padding-bottom: 500rpx;
+}
+
+.lyric-list .item.active {
+  color: #26ce8a;
+  font-size: 36rpx;
 }

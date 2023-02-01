@@ -30,10 +30,8 @@ Component({
    * 组件的方法列表
    */
   methods: {
-    goBack() {
-      wx.navigateBack({
-        delta: 1
-      });
+    handleLeftClick() {
+      this.triggerEvent('click')
     }
   }
 });

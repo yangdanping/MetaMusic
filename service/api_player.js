@@ -6,5 +6,8 @@ export function getSongDetail(ids) {
 export function getAlbumDetail(id) {
   return myRequest.get('/album',{id});
 }
+export function getSongLyric(id) {
+  return myRequest.get('/lyric',{id});
+}
 
 

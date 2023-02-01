@@ -1,11 +1,11 @@
-import { HYEventStore } from 'hy-event-store';
+import { HYEventStore as EventStore } from 'hy-event-store';
 import { getRankings } from '../service/api_music';
 
 // 映射至state的数据结构
 // const rankingMap = { 0: 'newRanking', 1: 'hotRanking', 2: 'originRanking', 3: 'upRanking' };
 const rankingMap = { 3779629: 'newRanking', 3778678: 'hotRanking', 2884035: 'originRanking', 19723756: 'upRanking' };
 
-const rankingStore = new HYEventStore({
+const rankingStore = new EventStore({
   state: {
     newRanking: {}, // 0: 新歌榜
     hotRanking: {}, // 1: 热门榜(作为推荐歌曲展示)

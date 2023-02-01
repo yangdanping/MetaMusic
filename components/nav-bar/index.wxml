@@ -5,13 +5,13 @@
   <!-- navbar内容 -->
   <view class="nav-container">
     <!-- 左边内容----------------------- -->
-    <view class="left">
+    <view class="left" bindtap="handleLeftClick">
       <!-- 注意slot要放在上面,默认的放在下面,解决css默认插槽不能显示的问题 -->
       <!-- 默认情况下，一个组件的 wxml 中只能有一个 slot,需要使用多 slot 时，可以在组件 js 中声明启用 -->
       <view class="left-slot">
         <slot name="left"></slot>
       </view>
-      <view class="left-arrow" bindtap="goBack">
+      <view class="left-arrow" >
         <image class="icon" src="/assets/images/icons/arrow-left.png" mode="widthFix" />
       </view>
     </view>

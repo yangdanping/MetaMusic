@@ -9,7 +9,7 @@
 
 
 <!-- 2.导航(注意要在.json中配置自定义导航) -->
-<nav-bar>
+<nav-bar bind:click="goBack">
   <!-- <text slot="left">left slot</text>
   <text slot="center">center slot</text> -->
   <view slot="center" class="tab">
@@ -30,9 +30,9 @@
       <view class="singer">{{songInfo.singer}}</view>
       <view class="album" bindtap="handleAlbumClick" data-id="{{songInfo.album.id}}">专辑:《{{songInfo.album.name}}》</view>
     </view>
-    <view class="lyric" wx:if="{{isMusicLyric}}">我是歌词</view>
+    <view class="lyric" wx:if="{{isMusicLyric}}">{{currentLyric}}</view>
     <view class="progress">
-      <slider class="slider" value="{{sliderValue}}" block-size="{{12}}" bindchange="handleSliderChange" bindchanging="handleSliderChanging"></slider>
+      <slider class="slider" value="{{sliderValue}}" block-size="{{12}}" bindchange="handleSliderChange" bindchanging="handleSliderChanging" activeColor="#26ce8a"></slider>
       <view class="time">
         <view class="current">{{format.formatDuration(currentTime)}}</view>
         <view class="duration">{{format.formatDuration(durationTime)}}</view>
@@ -41,12 +41,17 @@
     <view class="operation">
       <image class="btn btn-mode" bindtap="changeMode" data-mode="{{mode}}" src="/assets/images/player/play_{{mode}}.png" mode="" />
       <image class="btn btn-prev" src="/assets/images/player/play_prev.png" mode="" />
-      <image class="btn btn-pause" bindtap="pause" src="/assets/images/player/play_{{isContinuePlay?'pause':'resume'}}.png" mode="" />
+      <image class="btn btn-pause" bindtap="changeStatus" src="/assets/images/player/play_{{isPlaying?'pause':'resume'}}.png" mode="" />
       <image class="btn btn-next" src="/assets/images/player/play_next.png" mode="" />
       <image class="btn btn-music" src="/assets/images/player/play_music.png" mode="" />
     </view>
   </swiper-item>
   <swiper-item class="lyric">
-    2
+    <!-- 设置scroll-top实现歌词滚动 -->
+    <scroll-view class="lyric-list" scroll-y scroll-top="{{lyricScrollTop}}" scroll-with-animation>
+      <block wx:for="{{lyricInfo}}" wx:key="index">
+        <view class="item {{currentLyricIndex === index ?'active':''}}" style="height: {{lyricItemHeight}}px;line-height: {{lyricItemHeight}}px;">{{item.text}}</view>
+      </block>
+    </scroll-view>
   </swiper-item>
 </swiper>
