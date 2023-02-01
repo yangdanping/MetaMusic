@@ -1,8 +1,8 @@
 // 单独的js文件也可以共享对象
 // 创建一个全局的audioContext,可以在各个地方使用
 import { HYEventStore as EventStore } from 'hy-event-store';
-import { getSongDetail, getSongLyric } from '../service/api_player';
-import { parseLyric } from '../utils/parse-lyric';
+import { getSongInfoAction, setupPlayerAction } from './actions/player-info-actions';
+import { setupAudioContextListenerAction, changeMusicPlayStatusAction } from './actions/player-update-actions';
 
 const audioContext = wx.createInnerAudioContext();
 
@@ -18,121 +18,28 @@ const playerStore = new EventStore({
     durationTime: 0, //歌曲时长(通过网络请求得到)
 
     currentTime: 0, //当前播放时长
-    currentLyric: '',
-    currentLyricIndex: 0,
-
+    currentLyric: '', //当前滚动歌词
+    currentLyricIndex: 0, //当前滚动歌词index
     isPlaying: false,
-
-    playModeIndex: 0, // 0: 循环播放 1: 单曲循环 2: 随机播放
+    
+    mode: 'order',
+    // playModeIndex: 0, // 0: 循环播放 1: 单曲循环 2: 随机播放
     playListSongs: [],
     playListIndex: 0
   },
   actions: {
-    playMusicWithSongIdAction(ctx, { id, isRefresh = false }) {
-      // if (ctx.id == id && !isRefresh) {
-      //   this.dispatch('changeMusicPlayStatusAction', true);
-      //   return;
-      // }
-      ctx.id = id;
-
-      // 0.修改播放的状态(不重置播放状态)
-      ctx.isPlaying = true;
-      ctx.songInfo = {};
-      ctx.lyricInfo = [];
-      ctx.durationTime = 0;
-      ctx.currentTime = 0;
-      ctx.currentLyricIndex = 0;
-      ctx.lyricInfo = '';
-
-      // 1.根据id请求数据
-      // 请求歌曲详情
-      getSongDetail(id).then((res) => {
-        ctx.songInfo = res.songs[0];
-        ctx.durationTime = res.songs[0].dt;
-        audioContext.title = res.songs[0].name;
-      });
-      // 请求歌词数据
-      getSongLyric(id).then((res) => {
-        const lyricString = res.lrc.lyric;
-        const lyrics = parseLyric(lyricString);
-        ctx.lyricInfo = lyrics;
-      });
-
-      // 2.播放对应id的歌曲
-      audioContext.stop();
-      audioContext.src = `https://music.163.com/song/media/outer/url?id=${id}.mp3`;
-      audioContext.title = id;
-      audioContext.autoplay = true;
-
-      // 3.监听audioContext一些事件
-      if (ctx.isFirstPlay) {
-        this.dispatch('setupAudioContextListenerAction');
-        ctx.isFirstPlay = false;
-      }
-    }
-
-    // setupAudioContextListenerAction(ctx) {
-    //   // 1.监听歌曲可以播放
-    //   audioContext.onCanplay(() => {
-    //     audioContext.play();
-    //   });
-
-    //   // 2.监听时间改变
-    //   audioContext.onTimeUpdate(() => {
-    //     // 1.获取当前时间
-    //     const currentTime = audioContext.currentTime * 1000;
-
-    //     // 2.根据当前时间修改currentTime
-    //     ctx.currentTime = currentTime;
-
-    //     // 3.根据当前时间去查找播放的歌词
-    //     if (!ctx.lyricInfo.length) return;
-    //     let i = 0;
-    //     for (; i < ctx.lyricInfo.length; i++) {
-    //       const lyricInfo = ctx.lyricInfo[i];
-    //       if (currentTime < lyricInfo.time) {
-    //         break;
-    //       }
-    //     }
-    //     // 设置当前歌词的索引和内容
-    //     const currentIndex = i - 1;
-    //     if (ctx.currentLyricIndex !== currentIndex) {
-    //       const currentLyricInfo = ctx.lyricInfo[currentIndex];
-    //       ctx.currentLyricIndex = currentIndex;
-    //       ctx.lyricInfo = currentLyricInfo.text;
-    //     }
-    //   });
-
-    //   // 3.监听歌曲播放完成
-    //   audioContext.onEnded(() => {
-    //     this.dispatch('changeNewMusicAction');
-    //   });
-
-    //   // 4.监听音乐暂停/播放/停止
-    //   // 播放状态
-    //   audioContext.onPlay(() => {
-    //     ctx.isPlaying = true;
-    //   });
-    //   // 暂停状态
-    //   audioContext.onPause(() => {
-    //     ctx.isPlaying = false;
-    //   });
-    //   audioContext.onStop(() => {
-    //     ctx.isPlaying = false;
-    //     ctx.isStoping = true;
-    //   });
-    // },
-
-    // changeMusicPlayStatusAction(ctx, isPlaying = true) {
-    //   ctx.isPlaying = isPlaying;
-    //   if (ctx.isPlaying && ctx.isStoping) {
-    //     audioContext.src = `https://music.163.com/song/media/outer/url?id=${ctx.id}.mp3`;
-    //     audioContext.title = songInfo.name;
-    //     audioContext.startTime = ctx.currentTime / 1000;
-    //     ctx.isStoping = false;
-    //   }
-    //   ctx.isPlaying ? audioContext.play() : audioContext.pause();
-    // },
+    playMusicWithSongIdAction(ctx, { id }) {
+      // 1.根据id请求歌曲/歌词数据,并修改播放状态----------------------------------------------------
+      this.dispatch('getSongInfoAction', id);
+      // 2.播放对应id的歌曲----------------------------------------------------
+      this.dispatch('setupPlayerAction', { id, audioContext });
+      // 3.监听播放内容更新----------------------------------------------------
+      this.dispatch('setupAudioContextListenerAction', audioContext);
+    },
+    getSongInfoAction,
+    setupPlayerAction,
+    setupAudioContextListenerAction,
+    changeMusicPlayStatusAction //监听歌曲状态改变
 
     // changeNewMusicAction(ctx, isNext = true) {
     //   // 1.获取当前索引
