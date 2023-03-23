@@ -1,5 +1,6 @@
 import { getSearchHot, getSearchSuggest, getSearchResult } from '../../service/api_search';
-import { rankingStore, rankingMap } from '../../store/index';
+import { rankingStore, rankingMap, playerStore } from '../../store/index';
+
 import debounce from '../../utils/debounce';
 const debounceGetSearchSuggest = debounce(getSearchSuggest, 500);
 const hotKeywordsCount = 10; //热门搜索默认更新10条
@@ -12,7 +13,7 @@ Page({
     resultSongs: [],
     HasMoreResultSongs: false,
     searchValue: '',
-    rankings: { 3779629: {}, 2884035: {}, 19723756: {} }, //若直接是个数组,顺序就会不好确定
+    rankings: { 3779629: {}, 2884035: {}, 19723756: {} }, //若直接是个数组,id顺序就会不好确定
     // 富文本node节点
     suggestSongsNodes: [
       /* 
@@ -42,6 +43,7 @@ Page({
   },
   getPageData() {
     rankingStore.dispatch('getRankingDataAction'); //发起共享数据请求
+    // 遍历rankingMap,
     Object.keys(rankingMap).forEach((idx) => rankingStore.onState(rankingMap[idx], this.getRankingHandler(idx))); // 从store中获取共享的数据(若别的地方把state的值改了,这个代码会自动执行,就会做到数据共享+响应式)
     getSearchHot().then((res) => {
       const hotKeywords = res.data.slice(0, hotKeywordsCount);
@@ -161,6 +163,7 @@ Page({
     wx.navigateTo({
       url: `/pages/music-player/music-player?id=${id}`
     });
+    playerStore.dispatch('playBySongIdAction', { id });
   },
   onReachBottom() {
     console.log('onReachBottomonReachBottom');

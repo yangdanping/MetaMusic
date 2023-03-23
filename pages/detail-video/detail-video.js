@@ -1,5 +1,6 @@
 // pages/detail-video/detail-video.js
 import { getMVURL, getMVDetail, getMVInfo, getRelatedVideo, getMVComment, getVideoDetail, getVideoURL, getVideoInfo } from '../../service/api_video';
+import { playerStore } from '../../store/index'; //在另一个文件单独存放audioContext
 
 Page({
   data: {
@@ -13,7 +14,7 @@ Page({
     hasMore: true,
     showLoading: true,
     showCommentsLoading: false,
-    isPlayingMusic: false
+    isPlaying: false
   },
   onLoad(options) {
     const { id, type } = options;
@@ -67,14 +68,15 @@ Page({
     // 通过当前视频唯一标识形成实例
     const videoContext = wx.createVideoContext(vid);
     console.log('videoContextvideoContextvideoContext', videoContext);
-    this.setData({ isPlayingMusic: true });
+    playerStore.dispatch('changeMusicPlayStatusAction', false);
+    this.setData({ isPlaying: true });
   },
   pause() {
-    this.setData({ isPlayingMusic: false });
+    this.setData({ isPlaying: false });
   },
   getComment(offset = 0) {
     this.setData({ showCommentsLoading: true });
-    getMVComment(this.data.mvDetail.id,offset).then((res) => {
+    getMVComment(this.data.mvDetail.id, offset).then((res) => {
       if (!this.data.hasMore) return;
       else {
         const comments = res.comments;

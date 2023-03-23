@@ -1,4 +1,6 @@
 /* pages/home-music/index.wxss */
+@import '../../style/animation.wxss';
+
 page {
   padding: 0 20rpx;
   /* 注意,要全局设置box-sizing:border-box,解决page设置padding后页面变大的问题 */
@@ -23,4 +25,62 @@ page {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* 播放工具栏------------------------------------ */
+.play-bar-placeholder {
+  height: 44px;
+}
+
+.play-bar {
+  /* 固定在底部 */
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 44px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0 8px;
+
+  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+
+  background: #fafafa;
+}
+
+.play-bar .left,
+.play-bar .right {
+  display: flex;
+  align-items: center;
+}
+
+.play-bar .left .album {
+  position: relative;
+  top: -8px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+}
+
+.album.play {
+  animation: albumRotate 10s linear infinite running;
+}
+
+.play-bar .left .name {
+  font-size: 14px;
+  margin-left: 10rpx;
+}
+
+.play-bar .right .icon {
+  width: 30px;
+  height: 30px;
+}
+
+.play-bar .right .play {
+  width: 25px;
+  height: 25px;
+  margin-right: 10rpx;
 }

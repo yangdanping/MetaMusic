@@ -22,7 +22,7 @@
   <header-title title="推荐歌曲" bind:moreClick="handleMoreClick" bind:refreshClick="handleRefreshClick"></header-title>
   <view class="song-list">
     <block wx:for="{{recommendSongs}}" wx:key="id">
-      <music-item-v1 item="{{item}}"></music-item-v1>
+      <music-item-v1 item="{{item}}" bindtap="handleSongItemClick" data-index="{{index}}"></music-item-v1>
     </block>
   </view>
 </view>
@@ -39,6 +39,21 @@
     </block>
   </view>
 </view>
+
+<!-- 播放栏(placeholder用于撑开页面一段距离) -->
+<view class="play-bar-placeholder" wx:if="{{songInfo.name}}"></view>
+<view class="play-bar" wx:if="{{songInfo.name}}" bindtap="handlePlayerBarClick">
+  <view class="left">
+    <image class="album {{isPlaying?'play':''}}" src="{{songInfo.cover}}" mode="aspectFill" />
+    <view class="name">{{songInfo.name}}</view>
+  </view>
+  <view class="right">
+    <image class="icon play" catchtap="handlePlayerClick" src="/assets/images/player-bar/{{isPlaying?'pause':'play'}}_icon.png" />
+    <image class="icon playlist" src="/assets/images/player-bar/playlist_icon.png" />
+  </view>
+</view>
+
+
 <view class="loading" wx:if="{{!recommendSongs.length}}">
   <van-loading color="#26ce8a" />
 </view>

@@ -40,9 +40,9 @@
     </view>
     <view class="operation">
       <image class="btn btn-mode" bindtap="changeMode" data-mode="{{mode}}" src="/assets/images/player/play_{{mode}}.png" mode="" />
-      <image class="btn btn-prev" src="/assets/images/player/play_prev.png" mode="" />
+      <image class="btn btn-prev" bindtap="prevSongBtnClick" src="/assets/images/player/play_prev.png" mode="" />
       <image class="btn btn-pause" bindtap="changeStatus" src="/assets/images/player/play_{{isPlaying?'pause':'resume'}}.png" mode="" />
-      <image class="btn btn-next" src="/assets/images/player/play_next.png" mode="" />
+      <image class="btn btn-next" bindtap="nextSongBtnClick" src="/assets/images/player/play_next.png" mode="" />
       <image class="btn btn-music" src="/assets/images/player/play_music.png" mode="" />
     </view>
   </swiper-item>
@@ -50,7 +50,10 @@
     <!-- 设置scroll-top实现歌词滚动 -->
     <scroll-view class="lyric-list" scroll-y scroll-top="{{lyricScrollTop}}" scroll-with-animation>
       <block wx:for="{{lyricInfo}}" wx:key="index">
-        <view class="item {{currentLyricIndex === index ?'active':''}}" style="height: {{lyricItemHeight}}px;line-height: {{lyricItemHeight}}px;">{{item.text}}</view>
+        <view class="item {{currentLyricIndex === index ?'active':''}}" style="height: {{lyricItemHeight}}px;line-height: {{lyricItemHeight}}px;">
+          {{item.text}}
+        </view>
+        <!-- <view class="time-tag  {{currentLyricIndex === index ?'active':''}}">{{format.formatDuration(currentTime)}}</view> -->
       </block>
     </scroll-view>
   </swiper-item>

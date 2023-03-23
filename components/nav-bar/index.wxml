@@ -11,7 +11,7 @@
       <view class="left-slot">
         <slot name="left"></slot>
       </view>
-      <view class="left-arrow" >
+      <view class="left-arrow">
         <image class="icon" src="/assets/images/icons/arrow-left.png" mode="widthFix" />
       </view>
     </view>
@@ -22,6 +22,6 @@
       </view>
       <view class="center-title">{{title}}</view>
     </view>
-    <view class="right">右边</view>
+    <!-- <view class="right">右边</view> -->
   </view>
 </view>

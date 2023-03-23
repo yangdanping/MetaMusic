@@ -5,7 +5,7 @@
   <view class="video-banner">
     <view class="video-info">
       <view class="cover">
-        <image class="img {{isPlayingMusic ? 'play' : 'pause'}}" src="{{mvDetail.cover ? mvDetail.cover:mvDetail.coverUrl}}"></image>
+        <image class="img {{isPlaying ? 'play' : 'pause'}}" src="{{mvDetail.cover ? mvDetail.cover:mvDetail.coverUrl}}"></image>
       </view>
       <view class="name" wx:if="{{mvDetail}}">
         {{mvDetail.name?mvDetail.name:mvDetail.title}}<text wx:if="{{mvDetail.name}}" style="font-weight: 100;"> - {{mvDetail.artistName}}</text>

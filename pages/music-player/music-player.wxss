@@ -168,15 +168,15 @@ page {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: all 0.5s;
 }
 .lyric-list .item:first-of-type {
   padding-top: 500rpx;
 }
-.lyric-list .item:last-of-type {
-  padding-bottom: 500rpx;
-}
 
 .lyric-list .item.active {
+  position: relative;
   color: #26ce8a;
-  font-size: 36rpx;
+  transform: scale(1.2);
+  /* border-bottom: 1px solid #ccc; */
 }

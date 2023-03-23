@@ -1,4 +1,0 @@
-<!--components/music-bar/index.wxml-->
-<view wx:if="{{isShow}}" class="music-bar">
-123
-</view>

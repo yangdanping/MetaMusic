@@ -1,5 +1,5 @@
 // pages/home-music/index.js
-import { rankingStore, rankingMap } from '../../store/index';
+import { rankingStore, rankingMap, playerStore } from '../../store/index';
 import { getBanners, getSongMenu } from '../../service/api_music';
 import queryRect from '../../utils/query-rect';
 import throttle from '../../utils/throttle';
@@ -18,13 +18,16 @@ Page({
     menuRefreshOffset: 0,
     hotSongRefreshOffset: hotSongCount, //热门歌曲更新默认6条
     // 热门榜(作为推荐歌曲展示):3778678
-    // 新歌榜:3779629
     // 原创榜:2884035
+    // 新歌榜:3779629
     // 飙升榜:19723756
-    rankings: { 3779629: {}, 2884035: {}, 19723756: {} } //若直接是个数组,顺序就会不好确定
+    rankings: { 2884035: {}, 3779629: {}, 19723756: {} }, //若直接是个数组,顺序就会不好确定
+    songInfo: {},
+    isPlaying: true
   },
   onLoad(options) {
     this.getPageData(); // 获取页面数据
+    // playerStore.dispatch('playBySongIdAction', { id: 1974443814 });
   },
   getPageData() {
     // 获取<轮播图>请求-----------
@@ -49,6 +52,11 @@ Page({
     });
     // 获取榜单请求(getRankingHandler调用后返回一个函数,这里监听返回的这个函数)-------------
     Object.keys(rankingMap).forEach((idx) => rankingStore.onState(rankingMap[idx], this.getRankingHandler(idx))); // 从store中获取共享的数据(若别的地方把state的值改了,这个代码会自动执行,就会做到数据共享+响应式)
+    // 播放栏的监听
+    playerStore.onStates(['songInfo', 'isPlaying'], ({ songInfo, isPlaying }) => {
+      if (songInfo) this.setData({ songInfo });
+      if (isPlaying !== undefined) this.setData({ isPlaying });
+    });
   },
   handleSearchClick() {
     wx.navigateTo({ url: '/pages/detail-search/detail-search' });
@@ -120,6 +128,22 @@ Page({
     // 增加type字段来对不同的跳转方式进行区分
     wx.navigateTo({
       url: `/pages/detail-songs/detail-songs?ranking=${rankingName}&type=rank` //跳转通过options拿到
+    });
+  },
+  // 点击歌曲时将该歌曲所在的列表与歌曲在列表中的索引拿到,用于播放列表的实现
+  handleSongItemClick(e) {
+    const index = e.currentTarget.dataset.index;
+    console.log('home-music handleSongItemClick', this.data.recommendSongs, index);
+    playerStore.setState('playListSongs', this.data.recommendSongs);
+    playerStore.setState('playListIndex', index);
+  },
+  // 注意阻止按钮的冒泡事件(用catchtap替代bindtap)
+  handlePlayerClick(e) {
+    playerStore.dispatch('changeMusicPlayStatusAction', !this.data.isPlaying);
+  },
+  handlePlayerBarClick() {
+    wx.navigateTo({
+      url: `/pages/music-player/music-player?id=${this.data.songInfo.album.id}`
     });
   }
 

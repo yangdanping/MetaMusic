@@ -91,7 +91,7 @@
   }
 }
 
-@keyframes musicRotate {
+@keyframes albumRotate {
   from {
     transform: rotate(0deg);
   }

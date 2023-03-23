@@ -19,7 +19,7 @@ Page({
     mode: 'order',
     currentTime: 0, //当前播放时长
     currentLyric: '', //当前滚动歌词
-    currentLyricIndex: 0, //当前滚动歌词index
+    currentLyricIndex: 0, //当前滚动歌词index,用于设置歌词滚动高度
 
     //页面数据----------------------------------
     lyricScrollTop: 0, //由每个lyricItemHeight计算出来歌词滚动的距离
@@ -37,6 +37,11 @@ Page({
   onLoad(options) {
     const { id } = options;
     console.log('song id', id);
+    console.log(getCurrentPages());
+    if (getCurrentPages().length === 1) {
+      console.log('开发测试music-player界面,不用点击,发出直接请求');
+      playerStore.dispatch('playBySongIdAction', { id });
+    }
     // this.getPageData(id);
     this.setupPlayerStoreListener();
     // this.setupAudioContextListener(id);
@@ -107,11 +112,11 @@ Page({
   },
   handleSwiperChange(e) {
     const current = e.detail.current;
+
     this.setData({ currentPage: current });
   },
   changeStatus() {
-    console.log('changeStatus', `${this.data.isPlaying ? '暂停' : '播放'}`);
-    playerStore.dispatch('changeMusicPlayStatusAction', { audioContext, isPlaying: !this.data.isPlaying });
+    playerStore.dispatch('changeMusicPlayStatusAction', !this.data.isPlaying);
     // const isPlaying = this.data.isPlaying;
     // this.setData({ isPlaying: !isPlaying });
     // this.data.isPlaying ? audioContext.play() : audioContext.pause();
@@ -131,35 +136,43 @@ Page({
     // 2.计算出需要播放的currentTime
     const currentTime = (this.data.durationTime * sliderValue) / 100 / 1000; //注意seek()参数需要以秒为单位,所以为了得到s要/1000,
     // 3.设置context播放currentTime位置的音乐(最好先暂停,以保证缓存)
-    audioContext.pause();
+    // audioContext.pause();
     audioContext.seek(currentTime);
     // 4.记录最新的sliderValue(注意,拖拽后要isSliderChanging改为false,完成可以继续修改sliderValue和currentTime的逻辑)
     this.setData({ sliderValue, isSliderChanging: false });
+    // 5.若已暂停,则拖动后自动继续播放
+    if (!this.data.isPlaying) {
+      playerStore.dispatch('changeMusicPlayStatusAction', true);
+    }
   },
   handleSliderChanging(e) {
     console.log('handleSliderChanging', e);
     // 拖拽时同时改变时间
     const sliderValue = e.detail.value;
     const currentTime = (this.data.durationTime * sliderValue) / 100;
-    // isSliderChanging改为true,解决拖拽时,handleSliderChange事件也同时在该sliderValue产生的圆点跳动问题
+    // isSliderChanging改为true,解决拖拽时,handleSliderChange事件也同时在改sliderValue而产生的圆点跳动问题
     this.setData({ currentTime, isSliderChanging: true });
   },
   goBack() {
     console.log('goBack');
     wx.navigateBack();
   },
+  handleDragStart(e) {
+    console.log('handleDragStart');
+  },
   setupPlayerStoreListener() {
-    // 1.监听songInfo/lyricInfo/durationTime
+    // 1.从store中获取以下三种常量:songInfo/lyricInfo/durationTime
     playerStore.onStates(['songInfo', 'lyricInfo', 'durationTime'], ({ songInfo, lyricInfo, durationTime }) => {
-      console.log('监听songInfo/lyricInfo/durationTime', songInfo, lyricInfo, durationTime);
+      console.log('网络请求得到songInfo/lyricInfo/durationTime', songInfo, lyricInfo, durationTime);
       if (songInfo) this.setData({ songInfo }); //第一次拿到的我们在store中初始化的空对象,当我们有新数据的时候,就可以重新回调这个函数,拿到新数据
       if (lyricInfo) this.setData({ lyricInfo });
       if (durationTime) this.setData({ durationTime });
     });
     // 2.监听currentTime/currentLyric/currentLyricIndex
     playerStore.onStates(['currentTime', 'currentLyric', 'currentLyricIndex'], ({ currentTime, currentLyric, currentLyricIndex }) => {
-      console.log('监听currentTime/currentLyric/currentLyricIndex', currentTime, currentLyric, currentLyricIndex);
-      // 歌曲时间更新------------------------------
+      // console.log('监听currentTime/currentLyric/currentLyricIndex', currentTime, currentLyric, currentLyricIndex);
+
+      // 歌曲时间更新(拖拽时不改变)------------------------------
       if (currentTime && !this.data.isSliderChanging) {
         const sliderValue = (currentTime / this.data.durationTime) * 100;
         this.setData({ currentTime, sliderValue });
@@ -172,9 +185,18 @@ Page({
     });
     // 3.监听播放模式相关数据
     playerStore.onStates(['isPlaying', 'mode'], ({ isPlaying, mode }) => {
-      console.log('监听mode/isPlaying', isPlaying, mode);
+      console.log('监听isPlaying/mode', isPlaying, mode);
       if (isPlaying !== undefined) this.setData({ isPlaying }); //由于isPlaying是布尔值,所以设仅传来undefined时不设置isPlaying
       if (mode) this.setData({ mode });
     });
+  },
+  // 根据播放模式来进行切割
+  prevSongBtnClick() {
+    console.log('上一首');
+    playerStore.dispatch('changeNewMusicAction', false);
+  },
+  nextSongBtnClick() {
+    console.log('下一首');
+    playerStore.dispatch('changeNewMusicAction', true);
   }
 });
