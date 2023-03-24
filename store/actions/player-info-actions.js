@@ -2,10 +2,10 @@ import { getSongDetail, getSongLyric } from '../../service/api_player';
 import { parseLyric } from '../../utils/parse-lyric';
 import { audioContext } from '../../store/index';
 
-export const getSongInfoAction = (ctx, id) => {
+export const getCurrentSongAction = (ctx, id) => {
   // 清除上一次残留的播放信息(不改模式)并修改播放状态为播放
   ctx.isPlaying = true;
-  ctx.songInfo = {};
+  ctx.currentSong = {};
   ctx.lyricInfo = [];
   ctx.durationTime = 0;
   ctx.currentTime = 0;
@@ -14,7 +14,9 @@ export const getSongInfoAction = (ctx, id) => {
   // 请求并保存歌曲数据
   getSongDetail(id).then((res) => {
     const song = res.songs[0];
-    const songInfo = {
+    console.log('网络请求得到当前音乐完整信息,整合后在播放页监听', song);
+    const currentSong = {
+      id: song.id,
       name: song.name,
       singer: song.ar[0].name,
       cover: song.al.picUrl,
@@ -23,10 +25,9 @@ export const getSongInfoAction = (ctx, id) => {
         name: song.al.name
       }
     };
-    ctx.songInfo = songInfo; //保存歌曲信息
-    audioContext.title = songInfo.name; //存放真实的title,替换setupPlayerAction中我们临时存的title
-    console.log('audioContext.title', audioContext.title);
+    ctx.currentSong = currentSong; //保存歌曲信息
     ctx.durationTime = song.dt; //保存歌曲时长
+    audioContext.title = currentSong.name; //存放真实的title,替换setupPlayerAction中我们临时存的title
   });
   // 请求并保存歌词数据
   getSongLyric(id).then((res) => {

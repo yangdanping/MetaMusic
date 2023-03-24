@@ -41,11 +41,11 @@
 </view>
 
 <!-- 播放栏(placeholder用于撑开页面一段距离) -->
-<view class="play-bar-placeholder" wx:if="{{songInfo.name}}"></view>
-<view class="play-bar" wx:if="{{songInfo.name}}" bindtap="handlePlayerBarClick">
+<view class="play-bar-placeholder" wx:if="{{currentSong.name}}"></view>
+<view class="play-bar" wx:if="{{currentSong.name}}" bindtap="handlePlayerBarClick">
   <view class="left">
-    <image class="album {{isPlaying?'play':''}}" src="{{songInfo.cover}}" mode="aspectFill" />
-    <view class="name">{{songInfo.name}}</view>
+    <image class="album {{isPlaying?'play':''}}" src="{{currentSong.cover}}" mode="aspectFill" />
+    <view class="name">{{currentSong.name}}</view>
   </view>
   <view class="right">
     <image class="icon play" catchtap="handlePlayerClick" src="/assets/images/player-bar/{{isPlaying?'pause':'play'}}_icon.png" />

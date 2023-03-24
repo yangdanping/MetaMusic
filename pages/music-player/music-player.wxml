@@ -3,7 +3,7 @@
 <wxs src="../../utils/format.wxs" module="format"></wxs>
 
 <!-- 1.背景 -->
-<image class="bg" src="{{songInfo.cover}}" mode="aspectFill"></image>
+<image class="bg" src="{{currentSong.cover}}" mode="aspectFill"></image>
 <view class="bg-mask">
 </view>
 
@@ -23,12 +23,12 @@
 <swiper class="content" autoplay="{{false}}" style="height: {{contentHeight}}px;" bindchange="handleSwiperChange">
   <swiper-item class="music">
     <view class="album">
-      <image src="{{songInfo.cover}}" mode="widthFix" class="image" />
+      <image src="{{currentSong.cover}}" mode="widthFix" class="image" />
     </view>
     <view class="info">
-      <view class="name">{{songInfo.name}}</view>
-      <view class="singer">{{songInfo.singer}}</view>
-      <view class="album" bindtap="handleAlbumClick" data-id="{{songInfo.album.id}}">专辑:《{{songInfo.album.name}}》</view>
+      <view class="name">{{currentSong.name}}</view>
+      <view class="singer">{{currentSong.singer}}</view>
+      <view class="album" bindtap="handleAlbumClick" data-id="{{currentSong.album.id}}">专辑:《{{currentSong.album.name}}》</view>
     </view>
     <view class="lyric" wx:if="{{isMusicLyric}}">{{currentLyric}}</view>
     <view class="progress">

@@ -3,26 +3,26 @@
 <view class="header">
   <!-- header背景(若想图片以固定宽高进行填充,则mode选择aspectFill) -->
   <view class="bg">
-    <image wx:if="{{songInfo.coverImgUrl}}" class="bg-image" mode="aspectFill" src="{{songInfo.coverImgUrl}}"></image>
-    <view wx:if="{{songInfo.coverImgUrl}}" class="bg-mask"></view>
+    <image wx:if="{{currentSong.coverImgUrl}}" class="bg-image" mode="aspectFill" src="{{currentSong.coverImgUrl}}"></image>
+    <view wx:if="{{currentSong.coverImgUrl}}" class="bg-mask"></view>
   </view>
   <!-- 内容 -->
   <view class="content">
-    <image class="image" mode="aspectFill" src="{{songInfo.coverImgUrl}}"></image>
+    <image class="image" mode="aspectFill" src="{{currentSong.coverImgUrl}}"></image>
     <view class="info">
-      <view class="title">{{songInfo.name}}</view>
+      <view class="title">{{currentSong.name}}</view>
       <view class="anthor">
-        <image class="avatar" mode="aspectFill" src="{{songInfo.creator.avatarUrl}}"></image>
-        <text class="nickname">{{songInfo.creator.nickname}}</text>
+        <image class="avatar" mode="aspectFill" src="{{currentSong.creator.avatarUrl}}"></image>
+        <text class="nickname">{{currentSong.creator.nickname}}</text>
       </view>
-      <view class="desc" bindtap="showDialog" data-item="{{songInfo}}">简介: {{songInfo.description}}</view>
+      <view class="desc" bindtap="showDialog" data-item="{{currentSong}}">简介: {{currentSong.description}}</view>
     </view>
   </view>
   <!-- 操作(收藏、分享) -->
   <view class="operation">
     <view class="favor item">
       <image class="icon" mode="widthFix" src="/assets/images/icons/favor_icon.png"></image>
-      <text class="text">{{format.formatCount(songInfo.playCount)}}</text>
+      <text class="text">{{format.formatCount(currentSong.playCount)}}</text>
     </view>
     <view class="share item">
       <image class="icon" mode="widthFix" src="/assets/images/icons/share_icon.png"></image>

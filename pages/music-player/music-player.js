@@ -11,7 +11,7 @@ Page({
    */
   data: {
     //歌曲数据(为了实现数据共享,将歌曲实现逻辑抽取到store中)----------------------------------
-    songInfo: {}, //歌曲信息(通过网络请求得到)
+    currentSong: {}, //歌曲信息(通过网络请求得到)
     lyricInfo: [], //歌词信息(通过网络请求得到)
     durationTime: 0, //歌曲时长(通过网络请求得到)
     isPlaying: false,
@@ -30,23 +30,16 @@ Page({
     sliderValue: 0, //滑块进度
     isSliderChanging: false //用来控制拖拽进度条时,进度条是否改变value
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad(options) {
-    const { id } = options;
-    console.log('song id', id);
-    console.log(getCurrentPages());
+    const { id } = options; //抽取到store后,id暂时无用
     if (getCurrentPages().length === 1) {
       console.log('开发测试music-player界面,不用点击,发出直接请求');
       playerStore.dispatch('playBySongIdAction', { id });
     }
-    // this.getPageData(id);
     this.setupPlayerStoreListener();
+    // this.getPageData(id);
     // this.setupAudioContextListener(id);
   },
-
   // setupAudioContextListener(id) {
   // // 使用全局的audioContext
   // audioContext.stop(); //切歌
@@ -85,7 +78,7 @@ Page({
   //   getSongDetail(id).then((res) => {
   //     const song = res.songs[0];
   //     console.log('getSongDetail', song);
-  //     const songInfo = {
+  //     const currentSong = {
   //       name: song.name,
   //       singer: song.ar[0].name,
   //       cover: song.al.picUrl,
@@ -94,7 +87,7 @@ Page({
   //         name: song.al.name
   //       }
   //     };
-  //     this.setData({ songInfo, durationTime: song.dt });
+  //     this.setData({ currentSong, durationTime: song.dt });
   //   });
   //   getSongLyric(id).then((res) => {
   //     const lyricString = res.lrc.lyric;
@@ -103,7 +96,6 @@ Page({
   //     console.log('歌词信息', this.data.lyricInfo);
   //   });
   // },
-
   handleAlbumClick(e) {
     const id = e.currentTarget.dataset.id;
     wx.navigateTo({
@@ -111,22 +103,16 @@ Page({
     });
   },
   handleSwiperChange(e) {
-    const current = e.detail.current;
-
-    this.setData({ currentPage: current });
+    this.setData({ currentPage: e.detail.current });
   },
   changeStatus() {
     playerStore.dispatch('changeMusicPlayStatusAction', !this.data.isPlaying);
-    // const isPlaying = this.data.isPlaying;
-    // this.setData({ isPlaying: !isPlaying });
-    // this.data.isPlaying ? audioContext.play() : audioContext.pause();
   },
   changeMode(e) {
     const modes = this.data.modes;
     const currentMode = e.currentTarget.dataset.mode;
     let currentIndex = modes.findIndex((mode) => mode === currentMode);
     playerStore.setState('mode', modes[currentIndex >= 2 ? 0 : (currentIndex += 1)]);
-    // this.setData({ mode: modes[nextIndex] });
   },
   // slider事件:点击，拖拽
   handleSliderChange(e) {
@@ -136,7 +122,7 @@ Page({
     // 2.计算出需要播放的currentTime
     const currentTime = (this.data.durationTime * sliderValue) / 100 / 1000; //注意seek()参数需要以秒为单位,所以为了得到s要/1000,
     // 3.设置context播放currentTime位置的音乐(最好先暂停,以保证缓存)
-    // audioContext.pause();
+    audioContext.pause();
     audioContext.seek(currentTime);
     // 4.记录最新的sliderValue(注意,拖拽后要isSliderChanging改为false,完成可以继续修改sliderValue和currentTime的逻辑)
     this.setData({ sliderValue, isSliderChanging: false });
@@ -153,18 +139,11 @@ Page({
     // isSliderChanging改为true,解决拖拽时,handleSliderChange事件也同时在改sliderValue而产生的圆点跳动问题
     this.setData({ currentTime, isSliderChanging: true });
   },
-  goBack() {
-    console.log('goBack');
-    wx.navigateBack();
-  },
-  handleDragStart(e) {
-    console.log('handleDragStart');
-  },
   setupPlayerStoreListener() {
-    // 1.从store中获取以下三种常量:songInfo/lyricInfo/durationTime
-    playerStore.onStates(['songInfo', 'lyricInfo', 'durationTime'], ({ songInfo, lyricInfo, durationTime }) => {
-      console.log('网络请求得到songInfo/lyricInfo/durationTime', songInfo, lyricInfo, durationTime);
-      if (songInfo) this.setData({ songInfo }); //第一次拿到的我们在store中初始化的空对象,当我们有新数据的时候,就可以重新回调这个函数,拿到新数据
+    // 1.从store中获取以下三种常量:currentSong/lyricInfo/durationTime
+    playerStore.onStates(['currentSong', 'lyricInfo', 'durationTime'], ({ currentSong, lyricInfo, durationTime }) => {
+      // console.log('网络请求得到currentSong/lyricInfo/durationTime', currentSong, lyricInfo, durationTime);
+      if (currentSong) this.setData({ currentSong }); //第一次拿到的我们在store中初始化的空对象,当我们有新数据的时候,就可以重新回调这个函数,拿到新数据
       if (lyricInfo) this.setData({ lyricInfo });
       if (durationTime) this.setData({ durationTime });
     });
@@ -185,7 +164,7 @@ Page({
     });
     // 3.监听播放模式相关数据
     playerStore.onStates(['isPlaying', 'mode'], ({ isPlaying, mode }) => {
-      console.log('监听isPlaying/mode', isPlaying, mode);
+      console.log('从store中拿到isPlaying和mode,用于根据切歌、暂停', isPlaying, mode);
       if (isPlaying !== undefined) this.setData({ isPlaying }); //由于isPlaying是布尔值,所以设仅传来undefined时不设置isPlaying
       if (mode) this.setData({ mode });
     });
@@ -198,5 +177,8 @@ Page({
   nextSongBtnClick() {
     console.log('下一首');
     playerStore.dispatch('changeNewMusicAction', true);
+  },
+  goBack() {
+    wx.navigateBack();
   }
 });

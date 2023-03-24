@@ -3,7 +3,7 @@
   <!-- 左边是标题名称 -->
   <view class="left">
     <view class="refresh" wx:if="{{showRefresh}}" bindtap="handleRefresh">
-      <van-icon name="replay" size="18px" class="{{ rotate?'active':'' }}" />
+      <van-icon name="replay" size="18px" class="'icon' {{ rotate?'active':'' }}" />
     </view>
     <view class="title">{{title}}</view>
   </view>

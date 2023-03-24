@@ -23,7 +23,7 @@ Component({
   // 现在组件的生命周期写在lifetimes中
   lifetimes: {
     ready() {
-      console.log('nav-bar lifetimes ready');
+      // console.log('nav-bar lifetimes ready');
     }
   },
   /**
@@ -31,7 +31,7 @@ Component({
    */
   methods: {
     handleLeftClick() {
-      this.triggerEvent('click')
+      this.triggerEvent('click');
     }
   }
 });

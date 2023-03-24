@@ -1,10 +1,10 @@
 <!--pages/detail-songs/index.wxml-->
 <!-- 顶部header -->
 <block wx:if="{{type==='rank'}}">
-  <header-title title="{{songInfo.name}}" showRight="{{false}}"></header-title>
+  <header-title title="{{currentSong.name}}" showRight="{{false}}"></header-title>
 </block>
 <block wx:else="{{type==='menu'}}">
-  <detail-header songInfo="{{songInfo}}"></detail-header>
+  <detail-header currentSong="{{currentSong}}"></detail-header>
 </block>
 
 <!-- 歌单列表 -->

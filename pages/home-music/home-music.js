@@ -11,7 +11,7 @@ const hotSongCount = 6; //热门歌曲默认更新6条
 Page({
   data: {
     swiperHeight: 0,
-    banners: {},
+    banners: [],
     recommendSongs: [],
     hotSongMenu: [],
     chineseSongMenu: [],
@@ -22,7 +22,7 @@ Page({
     // 新歌榜:3779629
     // 飙升榜:19723756
     rankings: { 2884035: {}, 3779629: {}, 19723756: {} }, //若直接是个数组,顺序就会不好确定
-    songInfo: {},
+    currentSong: {},
     isPlaying: true
   },
   onLoad(options) {
@@ -53,8 +53,8 @@ Page({
     // 获取榜单请求(getRankingHandler调用后返回一个函数,这里监听返回的这个函数)-------------
     Object.keys(rankingMap).forEach((idx) => rankingStore.onState(rankingMap[idx], this.getRankingHandler(idx))); // 从store中获取共享的数据(若别的地方把state的值改了,这个代码会自动执行,就会做到数据共享+响应式)
     // 播放栏的监听
-    playerStore.onStates(['songInfo', 'isPlaying'], ({ songInfo, isPlaying }) => {
-      if (songInfo) this.setData({ songInfo });
+    playerStore.onStates(['currentSong', 'isPlaying'], ({ currentSong, isPlaying }) => {
+      if (currentSong) this.setData({ currentSong });
       if (isPlaying !== undefined) this.setData({ isPlaying });
     });
   },
@@ -84,7 +84,7 @@ Page({
       const rankingObj = { name, coverImgUrl, playCount, songList };
       // [key]表示key的名称是动态的,到时候传过来0的话,[key]就是0,这时对象解构中的0就会被覆盖为该动态属性的值
       // 太牛逼了下面这行!
-      console.log('this.data.rankingsthis.data.rankingsthis.data.rankingsthis.data.rankings', this.data.rankings);
+      // console.log('getRankingHandler整合store数据,得到榜单信息', this.data.rankings);
       const newRankings = { ...this.data.rankings, [idx]: rankingObj };
       this.setData({ rankings: newRankings });
     };
@@ -133,9 +133,9 @@ Page({
   // 点击歌曲时将该歌曲所在的列表与歌曲在列表中的索引拿到,用于播放列表的实现
   handleSongItemClick(e) {
     const index = e.currentTarget.dataset.index;
-    console.log('home-music handleSongItemClick', this.data.recommendSongs, index);
     playerStore.setState('playListSongs', this.data.recommendSongs);
     playerStore.setState('playListIndex', index);
+    console.log('点击歌曲时将该歌曲所在的列表与歌曲在列表中的索引拿到,用于播放列表的实现', this.data.recommendSongs, index);
   },
   // 注意阻止按钮的冒泡事件(用catchtap替代bindtap)
   handlePlayerClick(e) {
@@ -143,7 +143,7 @@ Page({
   },
   handlePlayerBarClick() {
     wx.navigateTo({
-      url: `/pages/music-player/music-player?id=${this.data.songInfo.album.id}`
+      url: `/pages/music-player/music-player?id=${this.data.currentSong.id}`
     });
   }
 

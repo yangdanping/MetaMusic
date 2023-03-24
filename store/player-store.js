@@ -1,7 +1,7 @@
 // 单独的js文件也可以共享对象
 // 创建一个全局的audioContext,可以在各个地方使用
 import { HYEventStore as EventStore } from 'hy-event-store';
-import { getSongInfoAction, setupPlayerAction } from './actions/player-info-actions';
+import { getCurrentSongAction, setupPlayerAction } from './actions/player-info-actions';
 import { setupAudioContextListenerAction, changeMusicPlayStatusAction, changeNewMusicAction } from './actions/player-update-actions';
 
 // const audioContext = wx.createInnerAudioContext();
@@ -16,7 +16,7 @@ const playerStore = new EventStore({
     isStoping: false,
 
     id: 0,
-    songInfo: {}, //歌曲信息(通过网络请求得到)
+    currentSong: {}, //歌曲信息(通过网络请求得到)
     lyricInfo: [], //歌词信息(通过网络请求得到)
     durationTime: 0, //歌曲时长(通过网络请求得到)
 
@@ -41,7 +41,7 @@ const playerStore = new EventStore({
       }
       ctx.id = id;
       // 1.根据id请求歌曲/歌词数据,并修改播放状态----------------------------------------------------
-      this.dispatch('getSongInfoAction', id);
+      this.dispatch('getCurrentSongAction', id);
       // 2.播放对应id的歌曲----------------------------------------------------
       this.dispatch('setupPlayerAction', id);
       // 3.监听播放内容(时间/歌词)更新,注意,让audioContext只添加一次监听----------------------------------------------------
@@ -51,7 +51,7 @@ const playerStore = new EventStore({
         ctx.isFirstPlay = false;
       }
     },
-    getSongInfoAction, //网络请求获取歌曲基本信息(时长/歌词等)
+    getCurrentSongAction, //网络请求获取歌曲基本信息(时长/歌词等)
     setupPlayerAction,
     setupAudioContextListenerAction, //监听时间/歌词的改变
     changeMusicPlayStatusAction, //监听歌曲状态改变

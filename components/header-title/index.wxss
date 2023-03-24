@@ -1,4 +1,5 @@
 /* components/header-title/index.wxss */
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -16,11 +17,11 @@
   margin-right: 10rpx;
 }
 
-.left .refresh van-icon {
+.left .refresh .icon {
   transition: all 0.3s;
 }
 
-.left .refresh van-icon.active {
+.left .refresh .icon.active {
   animation: rotate 1.5s forwards;
 }
 

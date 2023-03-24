@@ -6,7 +6,7 @@ import { getAlbumDetail } from '../../service/api_player';
 Page({
   data: {
     ranking: '',
-    songInfo: {},
+    currentSong: {},
     songs: [],
     options: {},
     hasMore: true
@@ -22,7 +22,7 @@ Page({
     if (type === 'album') {
       getAlbumDetail(id, offset).then((res) => {
         console.log('getAlbumDetail获得专辑信息----------------------------', res);
-        const songInfo = {
+        const currentSong = {
           name: res.album.name,
           coverImgUrl: res.album.picUrl,
           creator: {
@@ -32,12 +32,12 @@ Page({
           description: res.album.description,
           playCount: res.album.info.shareCount
         };
-        this.setData({ songInfo, songs: res.songs, hasMore: false });
+        this.setData({ currentSong, songs: res.songs, hasMore: false });
       });
     } else {
       eventChannel.on('getMenuData', (res) => {
         console.log('eventChannel获得歌单信息----------------------------', res);
-        this.setData({ songInfo: res });
+        this.setData({ currentSong: res });
       });
     }
     // 这里写死hasMore仅仅是为了让加载中显示出来,传入数据并没有hasMore
@@ -55,7 +55,7 @@ Page({
     }
   },
   getRankingDataHandler() {
-    return (res) => this.setData({ songInfo: res, songs: res.tracks });
+    return (res) => this.setData({ currentSong: res, songs: res.tracks });
   },
   onUnload() {
     // 页面销毁后取消监听

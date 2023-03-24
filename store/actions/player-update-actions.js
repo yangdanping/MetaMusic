@@ -19,7 +19,7 @@ export const setupAudioContextListenerAction = (ctx) => {
       const currentLyric = ctx.lyricInfo[currentIndex]?.text;
       ctx.currentLyric = currentLyric;
       ctx.currentLyricIndex = currentIndex;
-      console.log('当前歌词', ctx.currentLyric);
+      console.log('onTimeUpdate计算出当前歌词', ctx.currentLyric);
       // lyricScrollTop属于页面的东西,store中不保存
     }
   });
@@ -46,8 +46,8 @@ export const changeMusicPlayStatusAction = (ctx, isPlaying = true) => {
   ctx.isPlaying = isPlaying;
   if (ctx.isPlaying && ctx.isStoping) {
     audioContext.src = `https://music.163.com/song/media/outer/url?id=${ctx.id}.mp3`;
-    audioContext.title = ctx.songInfo.name; //存放真实的title,替换setupPlayerAction中我们临时存的title
-    audioContext.startTime = ctx.currentTime / 1000;
+    audioContext.title = ctx.currentSong.name; //存放真实的title,替换setupPlayerAction中我们临时存的title
+    // audioContext.startTime = ctx.currentTime / 1000;
     ctx.isStoping = false;
   }
   ctx.isPlaying ? audioContext.play() : audioContext.pause();
@@ -66,13 +66,14 @@ export const changeMusicPlayStatusAction = (ctx, isPlaying = true) => {
 export const changeNewMusicAction = (ctx, isNext = true) => {
   // 1.获取当前索引
   let index = ctx.playListIndex;
-
+  const playList = ctx.playListSongs;
+  console.log('changeNewMusicAction playList', playList);
   // 2.根据不同的播放模式,改变歌曲索引(单曲循环不变)
   switch (ctx.mode) {
     case 'order': // 顺序播放
       index = isNext ? index + 1 : index - 1;
-      if (index === ctx.playListSongs.length) index = 0; //已经是最后一首歌时,则回到第一首歌
-      if (index === -1) index = ctx.playListSongs.length - 1; //已经是第一首歌时,则跳到最后一首歌
+      if (index === playList.length) index = 0; //已经是最后一首歌时,则回到第一首歌
+      if (index === -1) index = playList.length - 1; //已经是第一首歌时,则跳到最后一首歌
       console.log(`changeNewMusicAction 顺序播放 ${isNext ? '下' : '上'}一首歌索引:`, index);
       break;
     case 'repeat': // 单曲循环
@@ -81,23 +82,23 @@ export const changeNewMusicAction = (ctx, isNext = true) => {
     case 'random': // 随机播放
       const currentIndex = index;
       do {
-        index = Math.floor(Math.random() * ctx.playListSongs.length); //Math.floor 向下取整
+        index = Math.floor(Math.random() * playList.length); //Math.floor 向下取整
       } while (currentIndex === index); //随机到当前歌曲则继续生成随机数
       console.log('changeNewMusicAction 随机播放 随机歌曲索引:', index, isNext);
       break;
   }
 
   // // 3.获取歌曲
-  let songInfo = ctx.playListSongs[index];
-  // 若songInfo无值,说明是顺序播放但列表只有一首歌的情况,则直接用当前歌曲
-  if (!songInfo) {
-    songInfo = ctx.songInfo;
+  let currentSong = ctx.playListSongs[index];
+  // 若currentSong无值,说明是顺序播放但列表只有一首歌的情况,则直接用当前歌曲
+  if (!currentSong) {
+    currentSong = ctx.currentSong;
   } else {
     // 切换歌曲后(顺序/随机播放),要记录新的索引
     ctx.playListIndex = index;
   }
-  console.log('changeNewMusicAction songInfo', songInfo);
+  console.log('changeNewMusicAction currentSong', currentSong);
 
   // // 4.播放新的歌曲
-  playerStore.dispatch('playBySongIdAction', { id: songInfo.id, isRefresh: true });
+  playerStore.dispatch('playBySongIdAction', { id: currentSong.id, isRefresh: true });
 };
