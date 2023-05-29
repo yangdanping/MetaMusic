@@ -44,6 +44,7 @@ export const setupAudioContextListenerAction = (ctx) => {
 export const changeMusicPlayStatusAction = (ctx, isPlaying = true) => {
   console.log('changeMusicPlayStatusAction', `${!isPlaying ? '暂停' : '播放'}`);
   ctx.isPlaying = isPlaying;
+  // 准备播放但当前处于停止状态的情况下,重新获取src和title
   if (ctx.isPlaying && ctx.isStoping) {
     audioContext.src = `https://music.163.com/song/media/outer/url?id=${ctx.id}.mp3`;
     audioContext.title = ctx.currentSong.name; //存放真实的title,替换setupPlayerAction中我们临时存的title
@@ -67,7 +68,6 @@ export const changeNewMusicAction = (ctx, isNext = true) => {
   // 1.获取当前索引
   let index = ctx.playListIndex;
   const playList = ctx.playListSongs;
-  console.log('changeNewMusicAction playList', playList);
   // 2.根据不同的播放模式,改变歌曲索引(单曲循环不变)
   switch (ctx.mode) {
     case 'order': // 顺序播放
@@ -89,16 +89,16 @@ export const changeNewMusicAction = (ctx, isNext = true) => {
   }
 
   // // 3.获取歌曲
-  let currentSong = ctx.playListSongs[index];
+  let switchedSong = ctx.playListSongs[index];
   // 若currentSong无值,说明是顺序播放但列表只有一首歌的情况,则直接用当前歌曲
-  if (!currentSong) {
-    currentSong = ctx.currentSong;
+  if (!switchedSong) {
+    switchedSong = ctx.currentSong;
   } else {
     // 切换歌曲后(顺序/随机播放),要记录新的索引
     ctx.playListIndex = index;
   }
-  console.log('changeNewMusicAction currentSong', currentSong);
+  console.log('changeNewMusicAction 得到歌曲的完整信息', switchedSong);
 
   // // 4.播放新的歌曲
-  playerStore.dispatch('playBySongIdAction', { id: currentSong.id, isRefresh: true });
+  playerStore.dispatch('playBySongIdAction', { id: switchedSong.id, isRefresh: true });
 };

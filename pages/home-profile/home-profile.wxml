@@ -16,7 +16,10 @@
       <!-- <view class="qr" wx:else>
         <image class="image" src="{{qrimg}}" mode="widthFix"></image>
       </view> -->
-      <view class="btn" bindtap="getUserProfile">微信登录</view>
+      <view class="btn">
+        <button open-type="getUserInfo" bindtap="getUserProfile"> 微信登录</button>
+        <button open-type="getPhoneNumber" bindtap="getPhoneNumber"> 获取手机信息</button>
+      </view>
     </block>
     <block wx:else>
       <view class="userInfo">

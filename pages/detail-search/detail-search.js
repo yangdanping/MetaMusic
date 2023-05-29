@@ -24,7 +24,7 @@ Page({
             attrs: { style: 'color:#26ce8a;' },
             children: [{ type: 'text', text: '爱' }]
          },
-                  {
+         {
             name: 'span',
             attrs: { style: 'color:#666;' },
             children: [{ type: 'text', text: '在西元前' }]
@@ -97,7 +97,7 @@ Page({
         // 对输入的关键字进行遍历,并生成节点数组
         // 如打入'爱'字,匹配到['爱在西元前',...]，则'爱'作为node1节点,'在西元前',作为node2节点
         suggestKeywords.forEach((keyword) => {
-          const nodes = [];
+          const nodes = []; //其中一个元素代表一个搜索结果
           //startsWith用来判断当前字符串是否以另外一个给定的子字符串开头,根据判断结果返回true/false
           const needToSlice = keyword.toUpperCase().startsWith(searchValue.toUpperCase());
           // 对匹配进行切割
