@@ -48,7 +48,7 @@ export const changeMusicPlayStatusAction = (ctx, isPlaying = true) => {
   if (ctx.isPlaying && ctx.isStoping) {
     audioContext.src = `https://music.163.com/song/media/outer/url?id=${ctx.id}.mp3`;
     audioContext.title = ctx.currentSong.name; //存放真实的title,替换setupPlayerAction中我们临时存的title
-    // audioContext.startTime = ctx.currentTime / 1000;
+    audioContext.startTime = ctx.currentTime / 1000;
     ctx.isStoping = false;
   }
   ctx.isPlaying ? audioContext.play() : audioContext.pause();

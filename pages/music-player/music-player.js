@@ -122,7 +122,7 @@ Page({
     // 2.计算出需要播放的currentTime
     const currentTime = (this.data.durationTime * sliderValue) / 100 / 1000; //注意seek()参数需要以秒为单位,所以为了得到s要/1000,
     // 3.设置context播放currentTime位置的音乐(最好先暂停,以保证缓存)
-    audioContext.pause();
+    // audioContext.pause();
     audioContext.seek(currentTime);
     // 4.记录最新的sliderValue(注意,拖拽后要isSliderChanging改为false,完成可以继续修改sliderValue和currentTime的逻辑)
     this.setData({ sliderValue, isSliderChanging: false });
@@ -139,35 +139,45 @@ Page({
     // isSliderChanging改为true,解决拖拽时,handleSliderChange事件也同时在改sliderValue而产生的圆点跳动问题
     this.setData({ currentTime, isSliderChanging: true });
   },
+
+  //音乐数据监听-----------------------------------------------------------------------------
+  handleCurrentMusicListener({ currentSong, lyricInfo, durationTime }) {
+    // console.log('网络请求得到currentSong/lyricInfo/durationTime', currentSong, lyricInfo, durationTime);
+    if (currentSong) this.setData({ currentSong }); //第一次拿到的我们在store中初始化的空对象,当我们有新数据的时候,就可以重新回调这个函数,拿到新数据
+    if (lyricInfo) this.setData({ lyricInfo });
+    if (durationTime) this.setData({ durationTime });
+  },
+  handleCurrentLyricListener({ currentTime, currentLyric, currentLyricIndex }) {
+    // console.log('监听currentTime/currentLyric/currentLyricIndex', currentTime, currentLyric, currentLyricIndex);
+    // 歌曲时间更新(拖拽时不改变)------------------------------
+    if (currentTime && !this.data.isSliderChanging) {
+      const sliderValue = (currentTime / this.data.durationTime) * 100;
+      this.setData({ currentTime, sliderValue });
+    }
+    // 歌词滚动更新------------------------------
+    if (currentLyric) this.setData({ currentLyric });
+    if (currentLyricIndex) {
+      this.setData({ currentLyricIndex, lyricScrollTop: currentLyricIndex * lyricItemHeight });
+    }
+  },
+  handleCurrentPlayModeListener({ isPlaying, mode }) {
+    console.log('从store中拿到isPlaying和mode,用于根据切歌、暂停', isPlaying, mode);
+    if (isPlaying !== undefined) this.setData({ isPlaying }); //由于isPlaying是布尔值,所以设仅传来undefined时不设置isPlaying
+    if (mode) this.setData({ mode });
+  },
   setupPlayerStoreListener() {
     // 1.从store中获取以下三种常量:currentSong/lyricInfo/durationTime
-    playerStore.onStates(['currentSong', 'lyricInfo', 'durationTime'], ({ currentSong, lyricInfo, durationTime }) => {
-      // console.log('网络请求得到currentSong/lyricInfo/durationTime', currentSong, lyricInfo, durationTime);
-      if (currentSong) this.setData({ currentSong }); //第一次拿到的我们在store中初始化的空对象,当我们有新数据的时候,就可以重新回调这个函数,拿到新数据
-      if (lyricInfo) this.setData({ lyricInfo });
-      if (durationTime) this.setData({ durationTime });
-    });
+    playerStore.onStates(['currentSong', 'lyricInfo', 'durationTime'], this.handleCurrentMusicListener);
     // 2.监听currentTime/currentLyric/currentLyricIndex
-    playerStore.onStates(['currentTime', 'currentLyric', 'currentLyricIndex'], ({ currentTime, currentLyric, currentLyricIndex }) => {
-      // console.log('监听currentTime/currentLyric/currentLyricIndex', currentTime, currentLyric, currentLyricIndex);
-
-      // 歌曲时间更新(拖拽时不改变)------------------------------
-      if (currentTime && !this.data.isSliderChanging) {
-        const sliderValue = (currentTime / this.data.durationTime) * 100;
-        this.setData({ currentTime, sliderValue });
-      }
-      // 歌词滚动更新------------------------------
-      if (currentLyric) this.setData({ currentLyric });
-      if (currentLyricIndex) {
-        this.setData({ currentLyricIndex, lyricScrollTop: currentLyricIndex * lyricItemHeight });
-      }
-    });
+    playerStore.onStates(['currentTime', 'currentLyric', 'currentLyricIndex'], this.handleCurrentLyricListener);
     // 3.监听播放模式相关数据
-    playerStore.onStates(['isPlaying', 'mode'], ({ isPlaying, mode }) => {
-      console.log('从store中拿到isPlaying和mode,用于根据切歌、暂停', isPlaying, mode);
-      if (isPlaying !== undefined) this.setData({ isPlaying }); //由于isPlaying是布尔值,所以设仅传来undefined时不设置isPlaying
-      if (mode) this.setData({ mode });
-    });
+    playerStore.onStates(['isPlaying', 'mode'], this.handleCurrentPlayModeListener);
+  },
+  onUnload() {
+    // 页面卸载时移除监听
+    playerStore.offStates(['currentSong', 'lyricInfo', 'durationTime'], this.handleCurrentMusicListener);
+    playerStore.offStates(['currentTime', 'currentLyric', 'currentLyricIndex'], this.handleCurrentLyricListener);
+    playerStore.offStates(['isPlaying', 'mode'], this.handleCurrentPlayModeListener);
   },
   // 根据播放模式来进行切割
   prevSongBtnClick() {

@@ -18,7 +18,7 @@
       </view> -->
       <view class="btn">
         <button open-type="getUserInfo" bindtap="getUserProfile"> 微信登录</button>
-        <button open-type="getPhoneNumber" bindtap="getPhoneNumber"> 获取手机信息</button>
+        <!-- <button open-type="getPhoneNumber" bindtap="getPhoneNumber"> 获取手机信息</button> -->
       </view>
     </block>
     <block wx:else>

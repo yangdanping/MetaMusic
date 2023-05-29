@@ -34,7 +34,7 @@ Page({
     });
   },
   onReachBottom() {
-    console.log('onReachBottom');
+    console.log('onReachBottom 请求歌单');
     this.getSongMenu(this.data.cat, this.data.playlists.length); // 注意是0~9后面追加10~19,而非替换
   }
 });

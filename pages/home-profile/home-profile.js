@@ -98,7 +98,7 @@ Page({
       isShow: true
     });
   },
-  async getPhoneNumber(e) {
-    console.log('getPhoneNumber', e.detail.code);
-  }
+  // async getPhoneNumber(e) {
+  //   console.log('getPhoneNumber', e.detail.code);
+  // }
 });
