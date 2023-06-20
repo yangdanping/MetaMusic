@@ -4,9 +4,11 @@ export const setupAudioContextListenerAction = (ctx) => {
   //1.监听歌曲可以播放
   audioContext.onCanplay(() => {
     audioContext.play();
+    console.log('可以播放=========================================');
   });
   //2.监听歌曲时间的改变(完成更新时间与进度条的逻辑)
   audioContext.onTimeUpdate(() => {
+    console.log('onTimeUpdate 监听歌曲时间的改变=========================================');
     // 1.获取并修改当前时间 -> 传来的是s,*1000得到ms
     const currentTime = audioContext.currentTime * 1000; //单位ms
     ctx.currentTime = currentTime;

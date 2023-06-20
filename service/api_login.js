@@ -1,4 +1,4 @@
-import myRequest, { myLoginRequest } from './index';
+import myRequest, { loginRequest } from './index';
 
 // 用户登录
 export function getLoginCode() {
@@ -16,11 +16,11 @@ export function getLoginCode() {
   });
 }
 export function codeToToken(code) {
-  return myLoginRequest.post('/login', { code });
+  return loginRequest.post('/login', { code });
 }
 
 export function checkToken() {
-  return myLoginRequest.post('/auth', {}, true); //isAuth传true,那边已配置header传入token
+  return loginRequest.post('/auth', {}, true); //isAuth传true,那边已配置header传入token
 }
 
 export function checkSession() {

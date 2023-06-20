@@ -33,7 +33,7 @@ const playerStore = new EventStore({
   },
   actions: {
     playBySongIdAction(ctx, { id, isRefresh = false }) {
-      console.log('playBySongIdAction', 'id:', id, 'ctx.id:', ctx.id);
+      console.log('playBySongIdAction', id, isRefresh);
       //若点击的已是当期正在播放的歌曲,则无需再请求,isRefresh决定是否强制刷新歌曲,默认不刷新,id有可能是字符串所以用双等号判断
       if (id == ctx.id && !isRefresh) {
         this.dispatch('changeMusicPlayStatusAction', true);

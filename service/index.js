@@ -42,8 +42,8 @@ class MetaRequest {
 }
 
 const myRequest = new MetaRequest(BASE_URL);
-const myLoginRequest = new MetaRequest(LOGIN_BASE_URL, { token });
+const loginRequest = new MetaRequest(LOGIN_BASE_URL, { token });
 
 export default myRequest;
 
-export { myLoginRequest };
+export { loginRequest };

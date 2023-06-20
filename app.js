@@ -3,6 +3,7 @@ import { getLoginCode, codeToToken, checkToken, checkSession } from './service/a
 import { TOKEN_KEY } from './constants/token-const';
 App({
   // globalData只用于保存和共享一些不会变的全局数据(如屏幕宽高),不能做到数据响应式
+  // 外部通过 const app = getApp() 获取到globalData中的数据
   globalData: {
     screenWidth: 0,
     screenHeight: 0,
@@ -12,11 +13,11 @@ App({
   },
   onLaunch() {
     // 1.获取设备基本信息
-    const { screenWidth, screenHeight, statusBarHeight } = wx.getSystemInfoSync();
+    const { screenWidth, screenHeight, statusBarHeight, platform } = wx.getSystemInfoSync();
     this.globalData.screenWidth = screenWidth; //设备屏幕宽度
     this.globalData.screenHeight = screenHeight; //设备导航栏高度
     this.globalData.statusBarHeight = statusBarHeight; // 状态栏高度
-    // 外部通过 const app = getApp() 获取到globalData中的数据
+    this.globalData.navBarHeight = platform === 'android' ? 48 : 44; // 状态栏高度
     this.globalData.deviceRadio = screenHeight / screenWidth; //高比宽 小屏设备(iphone5/6) < 1.78
     console.log('设备屏幕宽度 -->', screenWidth, '设备导航栏高度 -->', statusBarHeight, '高比宽 -->', this.globalData.deviceRadio);
 
