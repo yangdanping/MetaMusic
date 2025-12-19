@@ -1,55 +1,23 @@
 {
   "setting": {
-    "compileHotReLoad": true
+    "compileHotReLoad": true,
+    "urlCheck": false,
+    "coverView": true,
+    "lazyloadPlaceholderEnable": false,
+    "skylineRenderEnable": false,
+    "preloadBackgroundData": false,
+    "autoAudits": false,
+    "useApiHook": false,
+    "showShadowRootInWxmlPanel": true,
+    "useStaticServer": true,
+    "useLanDebug": false,
+    "showES6CompileOption": false,
+    "checkInvalidKey": true,
+    "ignoreDevUnusedFiles": true,
+    "bigPackageSizeSupport": false,
+    "useIsolateContext": false
   },
-  "condition": {
-    "miniprogram": {
-      "list": [
-        {
-          "name": "home-video",
-          "pathName": "pages/home-video/home-video",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "detail-video",
-          "pathName": "pages/detail-video/detail-video",
-          "query": "id=14541972",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "detail-search",
-          "pathName": "pages/detail-search/detail-search",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "",
-          "pathName": "pages/home-profile/home-profile",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "music-player",
-          "pathName": "pages/music-player/music-player",
-          "query": "id=1974443814",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "",
-          "pathName": "pages/home-profile/home-profile",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
-        }
-      ]
-    }
-  },
+  "condition": {},
   "description": "项目私有配置文件。此文件中的内容将覆盖 project.config.json 中的相同字段。项目的改动优先同步到此文件中。详见文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html",
   "libVersion": "3.11.3",
   "projectname": "MetaMusic"
