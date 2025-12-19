@@ -173,12 +173,12 @@ Page({
     // 3.监听播放模式相关数据
     playerStore.onStates(['isPlaying', 'mode'], this.handleCurrentPlayModeListener);
   },
-  onUnload() {
-    // 页面卸载时移除监听
-    playerStore.offStates(['currentSong', 'lyricInfo', 'durationTime'], this.handleCurrentMusicListener);
-    playerStore.offStates(['currentTime', 'currentLyric', 'currentLyricIndex'], this.handleCurrentLyricListener);
-    playerStore.offStates(['isPlaying', 'mode'], this.handleCurrentPlayModeListener);
-  },
+  // onUnload() {
+  //   // 页面卸载时移除监听
+  //   playerStore.offStates(['currentSong', 'lyricInfo', 'durationTime'], this.handleCurrentMusicListener);
+  //   playerStore.offStates(['currentTime', 'currentLyric', 'currentLyricIndex'], this.handleCurrentLyricListener);
+  //   playerStore.offStates(['isPlaying', 'mode'], this.handleCurrentPlayModeListener);
+  // },
   // 根据播放模式来进行切割
   prevSongBtnClick() {
     console.log('上一首');

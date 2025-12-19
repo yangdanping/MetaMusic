@@ -40,7 +40,7 @@ Component({
         url: `/pages/detail-songs/detail-songs?id=${id}&type=menu`,
         success(res) {
           const item = event.currentTarget.dataset.item;
-          res.eventChannel.emit('getMenuData', item); //触发事件
+          res.eventChannel.emit('getMenuData', item); //触发事件(数据量多时使用eventChannel)
         }
       });
     }

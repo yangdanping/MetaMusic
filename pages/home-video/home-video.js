@@ -49,7 +49,7 @@ Page({
       newData = offset === 0 ? res.data : newData.concat(res.data); // concat用于合并两个/多个数组(此方法不会更改现有数组，而是返回一个新数组)
       console.log('newDatanewDatanewDatanewData', newData);
       this.setData({ topMVs: newData, hasMore: res.hasMore }); //每次请求保存最新的传来的hasMore值,若超过数据偏移量则没有更多了,则不会再请求,也不会再报错
-      //3.请求成功后(即数据添加到末尾后)关闭转圈动画,并主动停掉下拉加载动画
+      //3.请求成功后(即数据添加到末尾后)关闭转圈动画,并主动停止下拉加载动画
       wx.hideNavigationBarLoading();
       offset === 0 && wx.stopPullDownRefresh();
     } else {
@@ -83,7 +83,7 @@ Page({
     this.setData({ mvURLInfo: {} });
   },
   //其他生命周期回调函数(监听用户下拉刷新事件 onPullDownRefresh/监听滚动到底部 onReachBottom)
-  //注意!还要配置,"backgroundTextStyle": "dark",不然在白色背景下看不到动
+  //注意!要在.json文件中enablePullDownRefresh配置为true,还要配置,"backgroundTextStyle": "dark",不然在白色背景下看不到动
   onPullDownRefresh() {
     console.log('监听用户下拉刷新事件 onPullDownRefresh');
     this.getTopMVData();
